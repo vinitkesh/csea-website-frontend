@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { formatBlog } from '@/lib/utils'
 import axios from 'axios'
 
@@ -14,6 +14,16 @@ import styles from './blog.module.css'
 export default function Blog({ latestBlog, trendingBlogs, archiveBlogs, blogCategories }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
+	const [shownArchiveBlogs, setShownArchiveBlogs] = useState([])
+
+	useEffect(() => {
+		const categoryFiltered = archiveBlogs?.filter((item) => {
+			if (selectedCategories?.length == 0) return true
+			return selectedCategories?.includes(item?.blog_category?.id)
+		})
+
+		setShownArchiveBlogs(categoryFiltered)
+	}, [archiveBlogs, selectedCategories, searchQuery])
 
 	return (
 		<>
@@ -50,7 +60,7 @@ export default function Blog({ latestBlog, trendingBlogs, archiveBlogs, blogCate
 				onSelectedCategoriesChange={setSelectedCategories}
 				onSearchQueryChange={setSearchQuery}
 			>
-				{archiveBlogs.map((item) => (
+				{shownArchiveBlogs.map((item) => (
 					<div className={styles['blog-post-horizontal-wrapper']} key={item?.id}>
 						<BlogPostHorizontal
 							id={item?.id}

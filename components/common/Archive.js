@@ -1,10 +1,10 @@
 import { useState } from 'react'
 
 import SectionTitle from '@/components/common/SectionTitle'
+import SearchBox from '@/components/common/SearchBox'
 import Chip from '@/components/common/Chip'
 
 import styles from './Archive.module.css'
-import SearchBox from '@/components/common/SearchBox'
 
 export default function Archive({ categories, onSelectedCategoriesChange, onSearchQueryChange, children }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
@@ -30,16 +30,27 @@ export default function Archive({ categories, onSelectedCategoriesChange, onSear
 							key={item?.id}
 							selected={selectedCategories.includes(item?.id)}
 							onClick={() => {
-								if (selectedCategories.includes(item?.id)) {
-									const temp = selectedCategories.filter((x) => x !== item?.id)
-									setSelectedCategories(temp)
-								} else setSelectedCategories([...selectedCategories, item?.id])
+								let newSelectedCategories
 
-								onSelectedCategoriesChange(selectedCategories)
+								if (selectedCategories.includes(item?.id))
+									newSelectedCategories = selectedCategories.filter((x) => x !== item?.id)
+								else newSelectedCategories = [...selectedCategories, item?.id]
+
+								setSelectedCategories(newSelectedCategories)
+								onSelectedCategoriesChange(newSelectedCategories)
 							}}
 						/>
 					))}
 				</div>
+				<button
+					className={styles['clear-categories']}
+					onClick={() => {
+						setSelectedCategories([])
+						onSelectedCategoriesChange([])
+					}}
+				>
+					Clear
+				</button>
 			</div>
 			<div className={styles['archive-right']}>{children}</div>
 		</section>
