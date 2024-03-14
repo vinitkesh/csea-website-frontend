@@ -1,0 +1,25 @@
+.chip {
+	height: 22px;
+	padding: 0 8px;
+	border: 1px solid var(--border-color);
+	border-radius: 50px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	width: fit-content;
+	user-select: none;
+}
+
+.chip span {
+	font-family: 'IBM Plex Mono', monospace;
+	text-transform: uppercase;
+	font-size: 13px;
+	line-height: 0.8;
+	white-space: nowrap;
+}
+
+.selected {
+	background-color: var(--primary);
+	color: var(--white);
+	border: 1px solid var(--primary);
+}

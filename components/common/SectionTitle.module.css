@@ -1,0 +1,29 @@
+.section-title {
+	height: 38px;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	border: 2px solid var(--primary);
+	border-radius: 100px;
+	width: fit-content;
+	white-space: nowrap;
+}
+
+.circle {
+	width: 15px;
+	height: 15px;
+	flex-shrink: 0;
+	border-radius: 50%;
+	background-color: var(--primary);
+}
+
+.section-title h2 {
+	font-size: 26px;
+	font-family: 'IBM Plex Mono', monospace;
+	font-weight: 500;
+	color: var(--primary);
+	text-transform: uppercase;
+	line-height: 0.8;
+	margin-bottom: 1px;
+}
