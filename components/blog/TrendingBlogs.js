@@ -5,10 +5,10 @@ import SectionTitle from '@/components/common/SectionTitle'
 import styles from './TrendingBlogs.module.css'
 
 export default function TrendingBlogs({ trendingBlogs }) {
-	if (!(trendingBlogs?.length > 0)) return <>hello</>
+	if (!(trendingBlogs?.length > 0)) return <></>
 	else
 		return (
-			<section className={styles['trending']}>
+			<section className={styles['trending']} id='trending'>
 				<div className={styles['trending-header']}>
 					<SectionTitle title={'Trending'} />
 				</div>

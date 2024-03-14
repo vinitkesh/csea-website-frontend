@@ -1,3 +1,4 @@
+import { useScrollDirection } from '@/hooks/useScrollDirection'
 import { useRouter } from 'next/router'
 
 import Link from 'next/link'
@@ -5,10 +6,11 @@ import Link from 'next/link'
 import styles from './SubNav.module.css'
 
 export default function SubNav({ pageTitle, links }) {
+	const scrollDirection = useScrollDirection()
 	const router = useRouter()
 
 	return (
-		<div className={styles['sub-nav-wrapper']}>
+		<div className={`${styles['sub-nav-wrapper']} ${scrollDirection === 'up' ? '' : styles['hide-nav']}`}>
 			<div className={styles['sub-nav']}>
 				<div className={styles['page-title-wrapper']}>
 					<img src='/svgs/tag-triangle.svg' alt='triangle' />

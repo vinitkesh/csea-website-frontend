@@ -1,3 +1,4 @@
+import { useScrollDirection } from '@/hooks/useScrollDirection'
 import { useRouter } from 'next/router'
 
 import Link from 'next/link'
@@ -14,10 +15,11 @@ const links = [
 ]
 
 export default function Navbar() {
+	const scrollDirection = useScrollDirection()
 	const router = useRouter()
 
 	return (
-		<div className={styles['navbar-wrapper']}>
+		<div className={`${styles['navbar-wrapper']} ${scrollDirection === 'up' ? '' : styles['hide-nav']}`}>
 			<nav className={styles['navbar']}>
 				<Link href='/'>
 					<img className={styles['logo']} src='/svgs/logo-nav.svg' alt='logo' />

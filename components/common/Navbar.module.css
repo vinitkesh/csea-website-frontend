@@ -14,6 +14,11 @@
 	align-items: center;
 	justify-content: space-between;
 	z-index: 99;
+	transition: 0.3s ease all;
+}
+
+.hide-nav .navbar {
+	top: calc(var(--navbar-height) * -1);
 }
 
 .logo {

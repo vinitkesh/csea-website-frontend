@@ -15,6 +15,11 @@
 	width: 100%;
 	background-color: var(--white);
 	z-index: 99;
+	transition: 0.3s ease all;
+}
+
+.hide-nav .sub-nav {
+	top: 0;
 }
 
 .page-title-wrapper {

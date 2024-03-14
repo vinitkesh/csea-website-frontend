@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { formatBlog } from '@/lib/utils'
+import Fuse from 'fuse.js'
 import axios from 'axios'
 
 import BlogPostBig from '@/components/blog/BlogPostBig'
@@ -22,7 +23,15 @@ export default function Blog({ latestBlog, trendingBlogs, archiveBlogs, blogCate
 			return selectedCategories?.includes(item?.blog_category?.id)
 		})
 
-		setShownArchiveBlogs(categoryFiltered)
+		if (!searchQuery) {
+			setShownArchiveBlogs(categoryFiltered)
+			return
+		}
+
+		const fuse = new Fuse(categoryFiltered, { includeScore: true, keys: ['title'] })
+		const result = fuse.search(searchQuery).map((item) => item.item)
+
+		setShownArchiveBlogs(result)
 	}, [archiveBlogs, selectedCategories, searchQuery])
 
 	return (
