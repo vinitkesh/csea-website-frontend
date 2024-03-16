@@ -1,0 +1,23 @@
+.not-found-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	flex: 1;
+	padding-bottom: 32px;
+}
+
+.num {
+	font-size: 72px;
+	font-family: 'IBM Plex Mono', monospace;
+}
+
+.not-found {
+	background-color: var(--image-bg);
+	text-transform: uppercase;
+	font-family: 'IBM Plex Mono', monospace;
+	font-size: 24px;
+	letter-spacing: 0.05rem;
+	padding: 4px;
+	line-height: 0.8;
+}

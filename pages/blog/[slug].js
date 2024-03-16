@@ -26,12 +26,16 @@ export default function BlogPost({ blog }) {
 	)
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
 	try {
-		let res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog-posts/1?populate=*`)
-		const blog = formatBlog(res?.data?.data)
+		const slug = context.params?.slug
+		let res = await axios.get(
+			`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog-posts/?filters[slug][$eq]=${slug}&populate=*`
+		)
 
-		return { props: { blog: blog ?? null } }
+		const blog = formatBlog(res?.data?.data?.[0])
+
+		return { props: { blog: blog ?? null }, notFound: !blog }
 	} catch (err) {
 		console.error(err)
 		return { props: { blog: null } }

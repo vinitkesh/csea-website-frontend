@@ -10,7 +10,7 @@ export default function SubNav({ pageTitle, links }) {
 	const router = useRouter()
 
 	return (
-		<div className={`${styles['sub-nav-wrapper']} ${scrollDirection === 'up' ? '' : styles['hide-nav']}`}>
+		<div className={`${styles['sub-nav-wrapper']} ${scrollDirection === 'down' ? styles['hide-nav'] : ''}`}>
 			<div className={styles['sub-nav']}>
 				<div className={styles['page-title-wrapper']}>
 					<img src='/svgs/tag-triangle.svg' alt='triangle' />
