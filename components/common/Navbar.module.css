@@ -1,5 +1,6 @@
 .navbar-wrapper {
 	height: var(--navbar-height);
+	flex-shrink: 0;
 }
 
 .navbar {

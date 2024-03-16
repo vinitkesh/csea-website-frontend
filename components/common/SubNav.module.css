@@ -1,5 +1,6 @@
 .sub-nav-wrapper {
 	height: var(--sub-nav-height);
+	flex-shrink: 0;
 }
 
 .sub-nav {
