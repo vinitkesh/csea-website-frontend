@@ -8,9 +8,14 @@
 	--image-bg: #eef9ff;
 	--border-color: #cfdaff;
 	--white: #fff;
+	--placeholder: #b9c7f4;
 
 	--navbar-height: 52px;
 	--sub-nav-height: 42px;
+
+	--font-inter: 'Inter', sans-serif;
+	--font-ibm: 'IBM Plex Mono', monospace;
+	--font-epilogue: 'Epilogue', sans-serif;
 }
 
 * {
