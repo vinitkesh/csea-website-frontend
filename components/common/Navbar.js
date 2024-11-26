@@ -19,7 +19,8 @@ export default function Navbar() {
 	const router = useRouter()
 
 	return (
-		<div className={`${styles['navbar-wrapper']} ${scrollDirection === 'down' ? styles['hide-nav'] : ''}`}>
+		// <div className={`${styles['navbar-wrapper']} ${scrollDirection === 'down' ? styles['hide-nav'] : ''}`}>
+		<div className={`${styles['navbar-wrapper']} `}>
 			<nav className={styles['navbar']}>
 				<Link href='/'>
 					<img className={styles['logo']} src='/svgs/logo-nav.svg' alt='logo' />

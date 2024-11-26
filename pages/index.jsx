@@ -14,24 +14,27 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
 	return (
 		<main>
-			<h1 ></h1>
-			<h1 ></h1>
-			<h1 ></h1>
-			<img src="/images/circles.jpg" alt="" className='hero-img' />
-			tag : 
-			<Tag value={'Networking'} />
-			SectionTitle component
+			<section className='h-max flex flex-col justify-center '>
+				<h1 className='w-max3 w-max text-[48px] px-6  ' >Computer Science</h1>
+				<h1 className='w-max3 w-max text-[48px] px-6  ' >&Engineering </h1>
+				<h1 className='w-max3 w-max text-[48px] px-6  ' >Association</h1>
+				<img src="/images/circles.jpg" alt="" className='hero-img' />
+			</section>
+			
+	
+			{/* <Tag value={'Networking'} />
+			
 			<SectionTitle title={'Archive'} />
-			Chip
+			
 			<Chip value={'Chip'} />
-			Chip selected
+			
 			<Chip value={'Chip'} selected />
 
 			<AuthorChip imageUrl={''} name={'John Doe'} />
 			<TextInput label={'Name*'} placeholder={'Name'} />
 			<TextArea label={'Message*'} placeholder={'Message'} />
 
-			<Button text={'Submit'} />
+			<Button text={'Submit'} /> */}
 			{/* <BlogPostBig 
 				slug={abc}
 				imageUrl={''}
