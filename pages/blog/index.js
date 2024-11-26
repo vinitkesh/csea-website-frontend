@@ -98,6 +98,7 @@ export async function getServerSideProps() {
 		})
 
 		const blogCategories = res?.data?.data?.map((item) => {
+			console.log(item);
 			return { id: item?.id, name: item?.attributes?.name }
 		})
 

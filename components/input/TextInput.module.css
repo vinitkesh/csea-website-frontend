@@ -6,8 +6,11 @@
 
 .input {
 	height: 40px;
-	width: 516px;
+	min-width: 316px;
+	width: 100%;
+	max-width: 516px;
 	border: 1px solid var(--border-color);
+	
 }
 
 .label {

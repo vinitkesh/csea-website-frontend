@@ -74,4 +74,29 @@
 
 	border: 1px solid var(--border-color);
 	border-radius: 100px;
+
+	cursor: pointer;
+}
+
+.logo:hover {
+	scale: 1.05;
+}
+
+@media screen and (max-width: 768px) {
+	.container {
+		flex-direction: column;
+	}
+
+	.leftWrapper {
+		width: 100%;
+		border-right: none;
+		border-bottom: 1px solid var(--border-color);
+	}
+
+	.rightWrapper {
+		width: 100%;
+		border-bottom: 1px solid var(--border-color);
+
+	}
+	
 }
