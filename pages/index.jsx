@@ -1,45 +1,61 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import Tag from '@/components/common/Tag'
-import SectionTitle from '@/components/common/SectionTitle'
-import Chip from '@/components/common/Chip'
-import AuthorChip from '@/components/common/AuthorChip'
-import TextInput from '@/components/input/TextInput'
-import TextArea from '@/components/input/TextArea'
-import Button from '@/components/common/Button'
-import BlogPostBig from '@/components/blog/BlogPostBig'
+import Image from 'next/image';
+import { Inter } from 'next/font/google';
+import TrendingBlogs from '@/components/blog/TrendingBlogs';
+import { formatBlog } from '@/lib/utils';
 
-const inter = Inter({ subsets: ['latin'] })
+export async function getServerSideProps() {
+  try {
 
-export default function Home() {
-	return (
-		<main>
-			<section className='h-max flex flex-col justify-center '>
-				<h1 className='w-max3 w-max text-[48px] px-6  ' >Computer Science</h1>
-				<h1 className='w-max3 w-max text-[48px] px-6  ' >&Engineering </h1>
-				<h1 className='w-max3 w-max text-[48px] px-6  ' >Association</h1>
-				<img src="/images/circles.jpg" alt="" className='hero-img' />
-			</section>
-			
+    let res = await axios.get(`http://127.0.0.1:1337/api/trending-blog`, {
+			params: {  
+        'populate[blog_posts][populate][authors]': '*',
+				'populate[blog_posts][populate][blog_category]': '*',
+				'populate[blog_posts][populate][cover_image]': '*',
+				}
+		})
+    
+		const trendingBlogs = res?.data?.data?.attributes?.blog_posts?.data?.map(formatBlog) ?? []
 	
-			{/* <Tag value={'Networking'} />
-			
-			<SectionTitle title={'Archive'} />
-			
-			<Chip value={'Chip'} />
-			
-			<Chip value={'Chip'} selected />
+    return {
+      props: {
+        trendingBlogs: trendingBlogs ?? [],
+      }
+    };
+  } catch (err) {
+		console.error(err)
 
-			<AuthorChip imageUrl={''} name={'John Doe'} />
-			<TextInput label={'Name*'} placeholder={'Name'} />
-			<TextArea label={'Message*'} placeholder={'Message'} />
+    return {
+      props: {
+        trendingBlogs: [],
+      }
+    };
+  }
+}
 
-			<Button text={'Submit'} /> */}
-			{/* <BlogPostBig 
-				slug={abc}
-				imageUrl={''}
+export default function Home({ trendingBlogs }) {
 
-				/> */}
-		</main>
-	)
+  return (
+    <main>
+      <section className="h-max absolute top-0 flex flex-col justify-center w-full">
+        <div className="my-5">
+          <h1 className="hero-heading w-max3 font-bold text-4xl md:text-5xl px-6">
+            Computer Science
+          </h1>
+          <h1 className="hero-heading w-max3 font-bold text-4xl md:text-5xl px-6">
+            & Engineering
+          </h1>
+          <h1 className="hero-heading w-max3 font-bold text-4xl md:text-5xl px-6">
+            Association
+          </h1>
+        </div>
+
+        <div className="hero-img-container relative h-[380px]">
+          <img src="/images/circles.jpg" alt="" className="hero-img" />
+        </div>
+
+        <TrendingBlogs trendingBlogs={trendingBlogs} />
+
+      </section>
+    </main>
+  );
 }

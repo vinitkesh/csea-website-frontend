@@ -12,10 +12,72 @@ import Archive from '@/components/common/Archive'
 
 import styles from './blog.module.css'
 
-export default function Blog({ latestBlog, trendingBlogs, archiveBlogs, blogCategories }) {
+export async function getServerSideProps() {
+	try {
+		// Fetching blog categories
+		let res = await axios.get(`http://127.0.0.1:1337/api/blog-categories`, {
+			params: { 'pagination[pageSize]': 100 },
+		})
+
+		// console.log("process server: ", process.env.NEXT_PUBLIC_BACKEND_URL);
+
+
+		const blogCategories = res?.data?.data?.map((item) => {
+			return { id: item?.id, name: item?.attributes?.name }
+		})	
+
+		// Fetching all blogs
+		res = await axios.get(`http://127.0.0.1:1337/api/blog-posts`, {
+			params: { 'pagination[pageSize]': 100, populate: '*', sort: 'createdAt:desc' },
+		})
+
+		const archiveBlogs = res?.data?.data?.map(formatBlog)	
+		archiveBlogs?.sort((a, b) => {
+			return a?.publish_date < b?.publish_date ? 1 : -1
+		})
+
+		const latestBlog = archiveBlogs?.[0] ;
+
+		// Fetching trending blogs
+		res = await axios.get(process.env.TRENDING_API, {
+			params: {  
+				'populate[blog_posts][populate][authors]': '*',
+				'populate[blog_posts][populate][blog_category]': '*',
+				'populate[blog_posts][populate][cover_image]': '*',
+				}
+		})
+		// console.log(res.data)
+		const trendingBlogs = res?.data?.data?.attributes?.blog_posts?.data?.map(formatBlog) ?? []
+
+		return {
+			props: {
+				latestBlog: latestBlog ?? null,
+				trendingBlogs: trendingBlogs ?? [],
+				archiveBlogs: archiveBlogs ?? [],
+				blogCategories: blogCategories ?? [],
+			},
+		}
+	} catch (err) {
+		console.error(err)
+		return { 
+			props: { 
+				latestBlog: null,
+				trendingBlogs: [],
+				archiveBlogs: [],
+				blogCategories: [],
+
+			}
+		}
+	}
+}
+
+
+export default function Blog({ trendingBlogs,latestBlog,blogCategories,archiveBlogs }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
 	const [shownArchiveBlogs, setShownArchiveBlogs] = useState([])
+
+	// console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
 
 	useEffect(() => {
 		const categoryFiltered = archiveBlogs?.filter((item) => {
@@ -32,7 +94,7 @@ export default function Blog({ latestBlog, trendingBlogs, archiveBlogs, blogCate
 		const result = fuse.search(searchQuery).map((item) => item.item)
 
 		setShownArchiveBlogs(result)
-	}, [archiveBlogs, selectedCategories, searchQuery])
+	}, [shownArchiveBlogs, selectedCategories, searchQuery])
 
 	return (
 		<>
@@ -69,7 +131,7 @@ export default function Blog({ latestBlog, trendingBlogs, archiveBlogs, blogCate
 				onSelectedCategoriesChange={setSelectedCategories}
 				onSearchQueryChange={setSearchQuery}
 			>
-				{shownArchiveBlogs.map((item) => (
+				{shownArchiveBlogs?.map((item) => (
 					<div className={styles['blog-post-horizontal-wrapper']} key={item?.id}>
 						<BlogPostHorizontal
 							id={item?.id}
@@ -88,49 +150,4 @@ export default function Blog({ latestBlog, trendingBlogs, archiveBlogs, blogCate
 			<div style={{ height: 400 }}></div>
 		</>
 	)
-}
-
-export async function getServerSideProps() {
-	try {
-		// Fetching blog categories
-		let res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog-categories`, {
-			params: { 'pagination[pageSize]': 100 },
-		})
-
-		const blogCategories = res?.data?.data?.map((item) => {
-			console.log(item);
-			return { id: item?.id, name: item?.attributes?.name }
-		})
-
-		// Fetching all blogs
-		res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog-posts`, {
-			params: { 'pagination[pageSize]': 100, populate: '*', sort: 'createdAt:desc' },
-		})
-
-		const archiveBlogs = res?.data?.data?.map(formatBlog)
-		archiveBlogs?.sort((a, b) => {
-			return a?.publish_date < b?.publish_date ? 1 : -1
-		})
-
-		const latestBlog = archiveBlogs?.[0]
-
-		// Fetching trending blogs
-		res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trending-blog`, {
-			params: { 'pagination[pageSize]': 100, 'populate[blog_posts][populate]': '*' },
-		})
-
-		const trendingBlogs = res?.data?.data?.attributes?.blog_posts?.data?.map(formatBlog)
-
-		return {
-			props: {
-				latestBlog: latestBlog ?? null,
-				trendingBlogs: trendingBlogs ?? [],
-				archiveBlogs: archiveBlogs ?? [],
-				blogCategories: blogCategories ?? [],
-			},
-		}
-	} catch (err) {
-		console.error(err)
-		return { props: { latestBlog: null, trendingBlogs: [], archiveBlogs: [], blogCategories: [] } }
-	}
 }

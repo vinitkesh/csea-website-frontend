@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Manrope:wght@200..800&family=Pixelify+Sans:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,17 +43,42 @@ body {
 }
 
 main {
-	min-height: 100vh;
+	min-height: calc(100vh-var(--navbar-height));
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+	min-height: 100vh;
 	
-	padding-top: 200px;
 	overflow-y: hidden;
 }
 
-.hero-img{
-	min-width: 100vw;
-	max-height: 400px;
+.hero-heading{
+	line-height: 48px;
+	font-family: 'Inter' , sans-serif !important ;
+	font-size: 48px;
 }
+
+@media screen and (max-width:500px) {
+	.hero-heading{
+		line-height: 20px;
+		font-size: 20px;
+	}
+
+	.hero-img-container{
+		height: 150px;
+	}
+
+}
+
+.hero-img{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	height: 100%;
+	max-width: none; /*helps the image overflow*/
+	min-width: 100vw;
+}
+
+
