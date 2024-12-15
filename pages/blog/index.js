@@ -15,7 +15,7 @@ import styles from './blog.module.css'
 export async function getServerSideProps() {
 	try {
 		// Fetching blog categories
-		let res = await axios.get(`http://127.0.0.1:1337/api/blog-categories`, {
+		let res = await axios.get(process.env.BLOG_CATEGORIES_API, {
 			params: { 'pagination[pageSize]': 100 },
 		})
 
@@ -27,11 +27,12 @@ export async function getServerSideProps() {
 		})	
 
 		// Fetching all blogs
-		res = await axios.get(`http://127.0.0.1:1337/api/blog-posts`, {
+		res = await axios.get(process.env.BLOGS_API, {
 			params: { 'pagination[pageSize]': 100, populate: '*', sort: 'createdAt:desc' },
 		})
 
 		const archiveBlogs = res?.data?.data?.map(formatBlog)	
+		
 		archiveBlogs?.sort((a, b) => {
 			return a?.publish_date < b?.publish_date ? 1 : -1
 		})
@@ -94,7 +95,7 @@ export default function Blog({ trendingBlogs,latestBlog,blogCategories,archiveBl
 		const result = fuse.search(searchQuery).map((item) => item.item)
 
 		setShownArchiveBlogs(result)
-	}, [shownArchiveBlogs, selectedCategories, searchQuery])
+	}, [ selectedCategories, searchQuery])
 
 	return (
 		<>

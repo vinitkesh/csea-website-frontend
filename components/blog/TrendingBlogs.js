@@ -22,10 +22,8 @@ import { stringify } from 'querystring'
 
 export default function TrendingBlogs({ trendingBlogs }) {
 	if (!(trendingBlogs)) return <>No data</>
-	console.log('trending blog data : ',trendingBlogs)
+	// console.log('trending blog data : ',trendingBlogs)
 	// else
-
-	console.log('trending blog data : ',trendingBlogs)
 	
 		return (
 			<section className={styles['trending']} id='trending'>
