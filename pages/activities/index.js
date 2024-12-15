@@ -5,38 +5,29 @@ import axios from 'axios'
 
 import styles from './activities.module.css'
 import SubNav from '@/components/common/SubNav'
-import SectionTitle from '@/components/common/SectionTitle'
 import LatestActivites from '@/components/activities/LatestActivites'
+import Archive from '@/components/common/Archive'
+import ActivitiesHorizontal from '@/components/activities/ActivitesHorizontal'
 
 export async function getServerSideProps() {
 	try {
+		let res = await axios.get(process.env.EVENT_CATEGORIES_API,{ params: { 'pagination[pageSize]': 100 }})
+		const eventCategories = await res?.data?.data?.map((item) => {
+			return { id: item?.id, name: item?.attributes?.name }
+		})
 
-	let res = await axios.get(process.env.EVENT_CATEGORIES_API,{
-		params: { 'pagination[pageSize]': 100 },
-	})
-	
-	const eventCategories = await res?.data?.data?.map((item) => {
-		return { id: item?.id, name: item?.attributes?.name }
-	})
+		res = await axios.get(process.env.EVENTS_API, {	params: { 'populate': '*'}})
+		const latestEvents = res?.data?.data?.map(formatEvent)
+		latestEvents?.sort((a, b) => {
+			return a?.date < b?.date ? 1 : -1
+		})
 
-	res = await axios.get(process.env.EVENTS_API, {
-		params: { 
-			'populate': '*',
-		},
-	})
-
-	const latestEvents = res?.data?.data?.map(formatEvent)
-
-	latestEvents?.sort((a, b) => {
-		return a?.date < b?.date ? 1 : -1
-	})
-
-	return {
-		props: {
-			eventCategories: eventCategories ?? [],
-			latestEvents: latestEvents ?? [],
+		return {
+			props: {
+				eventCategories: eventCategories ?? [],
+				latestEvents: latestEvents ?? [],
+			}
 		}
-	}
 
 	} catch (err){
 		console.log("Error: ", err)
@@ -60,7 +51,7 @@ export default function activities({ latestEvents, eventCategories }) {
 	useEffect(() => {
 		const categoryFiltered = latestEvents?.filter((item) => {
 			if (selectedCategories?.length == 0) return true
-			return selectedCategories?.includes(item?.blog_category?.id)
+			return selectedCategories?.includes(item?.event_category?.id)
 		})
 
 		if (!searchQuery) {
@@ -80,27 +71,10 @@ export default function activities({ latestEvents, eventCategories }) {
 				pageTitle='Activities'
 				links={[
 					{ name: 'Events', href: '/activities#events' },
-					{ name: 'Threads', href: '/activities#threads' },
+					{ name: 'Threads', href: '/activities/threads' },
 					{ name: 'Interview Diaries', href: 'https://sites.google.com/nitc.ac.in/interviewdiaries/home' },
 				]}
 			/>
-			{/* <header className={styles['header']} id='latest'>
-				<div className={styles['header-left']}>
-					<SectionTitle title={'Latest'} />
-				</div>
-				<div className={styles['header-right']}>
-					<BlogPostBig
-						id={latestBlog?.id}
-						slug={latestBlog?.slug}
-						imageUrl={latestBlog?.cover_image_url}
-						tag={latestBlog?.blog_category?.name}
-						date={latestBlog?.publish_date}
-						title={latestBlog?.title}
-						description={latestBlog?.description}
-						authors={latestBlog?.authors}
-					/>
-				</div>
-			</header> */}
 
 			<LatestActivites latestEvents={latestEvents} />
 
@@ -109,17 +83,15 @@ export default function activities({ latestEvents, eventCategories }) {
 				onSelectedCategoriesChange={setSelectedCategories}
 				onSearchQueryChange={setSearchQuery}
 			>
-				{shownArchiveBlogs?.map((item) => (
+				{shownArchiveEvents?.map((item) => (
 					<div className={styles['blog-post-horizontal-wrapper']} key={item?.id}>
-						<BlogPostHorizontal
+						<ActivitiesHorizontal
 							id={item?.id}
 							slug={item?.slug}
-							imageUrl={item?.cover_image_url}
-							tag={item?.blog_category?.name}
-							date={item?.publish_date}
+							imageUrl={item?.cover_img}
+							tag={item?.event_category}
+							date={item?.date}
 							title={item?.title}
-							description={item?.description}
-							authors={item?.authors}
 						/>
 					</div>
 				))}
