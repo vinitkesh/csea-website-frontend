@@ -15,7 +15,7 @@ import styles from './blog.module.css'
 export async function getServerSideProps() {
 	try {
 		// Fetching blog categories
-		let res = await axios.get(process.env.BLOG_CATEGORIES_API, {
+		let res = await axios.get(`http://127.0.0.1:1337/api/blog-categories`, {
 			params: { 'pagination[pageSize]': 100 },
 		})
 
@@ -27,12 +27,11 @@ export async function getServerSideProps() {
 		})	
 
 		// Fetching all blogs
-		res = await axios.get(process.env.BLOGS_API, {
+		res = await axios.get(`http://127.0.0.1:1337/api/blog-posts`, {
 			params: { 'pagination[pageSize]': 100, populate: '*', sort: 'createdAt:desc' },
 		})
 
 		const archiveBlogs = res?.data?.data?.map(formatBlog)	
-		
 		archiveBlogs?.sort((a, b) => {
 			return a?.publish_date < b?.publish_date ? 1 : -1
 		})
@@ -49,6 +48,11 @@ export async function getServerSideProps() {
 		})
 		// console.log(res.data)
 		const trendingBlogs = res?.data?.data?.attributes?.blog_posts?.data?.map(formatBlog) ?? []
+
+		console.log("trendingBlogs: ", trendingBlogs);
+		console.log("latestBlog: ", latestBlog);
+		console.log("archiveBlogs: ", archiveBlogs);
+		console.log("blogCategories: ", blogCategories);
 
 		return {
 			props: {
@@ -76,7 +80,7 @@ export async function getServerSideProps() {
 export default function Blog({ trendingBlogs,latestBlog,blogCategories,archiveBlogs }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
-	const [shownArchiveBlogs, setShownArchiveBlogs] = useState([])
+	const [shownArchiveBlogs, setShownArchiveBlogs] = useState(archiveBlogs)
 
 	// console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
 
