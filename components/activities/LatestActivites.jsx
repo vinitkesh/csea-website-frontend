@@ -26,7 +26,7 @@ export default function LatestActivites({ latestEvents }) {
 								id={item?.id}
 								slug={item?.slug}
 								imageUrl={item?.cover_img}
-								tag={item?.event_category}
+								tag={item?.event_category?.name}
 								date={item?.date}
 								title={item?.title}
 							/>

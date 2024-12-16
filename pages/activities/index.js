@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { formatBlog, formatEvent } from '@/lib/utils'
+import { formatEvent } from '@/lib/utils'
 import Fuse from 'fuse.js'
 import axios from 'axios'
 
@@ -17,15 +17,18 @@ export async function getServerSideProps() {
 		})
 
 		res = await axios.get(process.env.EVENTS_API, {	params: { 'populate': '*'}})
-		const latestEvents = res?.data?.data?.map(formatEvent)
-		latestEvents?.sort((a, b) => {
+		const events = res?.data?.data?.map(formatEvent)
+		events?.sort((a, b) => {
 			return a?.date < b?.date ? 1 : -1
 		})
+
+		const latestEvents = events;		
 
 		return {
 			props: {
 				eventCategories: eventCategories ?? [],
 				latestEvents: latestEvents ?? [],
+				events: events ?? [],
 			}
 		}
 
@@ -41,7 +44,7 @@ export async function getServerSideProps() {
 }
 
 
-export default function activities({ latestEvents, eventCategories }) {
+export default function activities({ latestEvents, eventCategories,events }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
 	const [shownArchiveEvents, setShownArchiveEvents] = useState([])
@@ -49,12 +52,13 @@ export default function activities({ latestEvents, eventCategories }) {
 	// console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
 
 	useEffect(() => {
-		const categoryFiltered = latestEvents?.filter((item) => {
+		const categoryFiltered = events?.filter((item) => {
 			if (selectedCategories?.length == 0) return true
 			return selectedCategories?.includes(item?.event_category?.id)
 		})
 
 		if (!searchQuery) {
+			console.log("categoryFiltered: ", categoryFiltered)
 			setShownArchiveEvents(categoryFiltered)
 			return
 		}
@@ -64,6 +68,12 @@ export default function activities({ latestEvents, eventCategories }) {
 
 		setShownArchiveEvents(result)
 	}, [selectedCategories, searchQuery])
+
+	useEffect(() => {
+		const initialEvents = events || []
+		setShownArchiveEvents(initialEvents)
+	}, [events])
+	
 
 	return (
 		<>
@@ -76,7 +86,7 @@ export default function activities({ latestEvents, eventCategories }) {
 				]}
 			/>
 
-			<LatestActivites latestEvents={latestEvents} />
+			<LatestActivites latestEvents={events} />
 
 			<Archive
 				categories={eventCategories}
@@ -89,8 +99,8 @@ export default function activities({ latestEvents, eventCategories }) {
 							id={item?.id}
 							slug={item?.slug}
 							imageUrl={item?.cover_img}
-							tag={item?.event_category}
-							date={item?.date}
+							tag={item?.event_category?.name || ''}
+							date={item?.date || 'No Date Available'}
 							title={item?.title}
 						/>
 					</div>
