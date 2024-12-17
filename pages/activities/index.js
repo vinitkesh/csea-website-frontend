@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react'
 import { formatEvent } from '@/lib/utils'
 import Fuse from 'fuse.js'
@@ -44,7 +46,7 @@ export async function getServerSideProps() {
 }
 
 
-export default function activities({ latestEvents, eventCategories,events }) {
+export default function Activities({ latestEvents, eventCategories,events }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
 	const [shownArchiveEvents, setShownArchiveEvents] = useState([])

@@ -32,7 +32,7 @@ import SectionTitle from '@/components/common/SectionTitle'
 // }
 
 
-export default function gallery({  }) {
+export default function Gallery({  }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
 	const [shownArchiveBlogs, setShownArchiveBlogs] = useState([])

@@ -66,8 +66,14 @@
     }
 
     .cover {
-        width: 150px;
-        aspect-ratio: 9 / 6;
+        width: 140px;
+	    aspect-ratio: 6 / 9;
+    }
+    .title{
+        font-size: 20px ;
+    }
+    .detailsChip{
+        font-size: 12px;
     }
 
     .detailsChip{
