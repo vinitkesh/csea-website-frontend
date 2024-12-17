@@ -59,7 +59,7 @@ export default function gallery({  }) {
 	return (
 		<>
 			<SubNav
-				pageTitle='Blog'
+				pageTitle='Gallery'
 				links={[
 					{ name: 'Feautured', href: '/gallery#featured' },
 					{ name: 'Archive', href: '/gallery#archive' },
