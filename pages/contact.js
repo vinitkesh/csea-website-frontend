@@ -32,7 +32,8 @@ export default function contact() {
 							Department of CSE
 							<br />
 							National Institute of Technology Calicut
-							<br /> NIT Campus P.O 673 601,
+							<br /> 
+							NIT Campus P.O 673 601,
 							<br />
 							Kozhikode, Kerala
 							<br />
@@ -47,7 +48,7 @@ export default function contact() {
 						<Tag value={'socials'} />
 						<div className={styles.logos}>
 							<div className={styles.logo}>
-								<img src='/svgs/x.svg' />
+								<img src='/svgs/X.svg' />
 							</div>
 							<div className={styles.logo}>
 								<img src='/svgs/instagram.svg' />

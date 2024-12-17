@@ -1,4 +1,4 @@
-.blog-post-vertical {
+.activities-vertical {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -67,13 +67,6 @@
 	display: none;
 }
 
-.authors-wrapper {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	flex-wrap: wrap;
-}
-
 @media (max-width: 1070px) {
 }
 
@@ -81,10 +74,6 @@
 	.right {
 		padding-right: 0;
 		padding-left: 10px;
-	}
-
-	.authors-wrapper {
-		display: none;
 	}
 
 	.description {

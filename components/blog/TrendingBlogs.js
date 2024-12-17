@@ -3,10 +3,28 @@ import BlogPostVertical from '@/components/blog/BlogPostVertical'
 import SectionTitle from '@/components/common/SectionTitle'
 
 import styles from './TrendingBlogs.module.css'
+import { env } from 'process'
+import { revalidatePath } from 'next/cache'
+import { stringify } from 'querystring'
+
+// export async function getStaticProps() {
+// 	const res = await fetch( env.BACKEND_API + '/trending-blog');
+// 	const data = await res.json();
+
+// 	return {
+// 		props: {
+// 			posts: data.data,
+// 		}
+// 		,
+// 		revalidate: 10,
+// 	};
+// }
 
 export default function TrendingBlogs({ trendingBlogs }) {
-	if (!(trendingBlogs?.length > 0)) return <></>
-	else
+	if (!(trendingBlogs)) return <>No data</>
+	// console.log('trending blog data : ',trendingBlogs)
+	// else
+	
 		return (
 			<section className={styles['trending']} id='trending'>
 				<div className={styles['trending-header']}>
