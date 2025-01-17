@@ -46,6 +46,11 @@ export async function getServerSideProps() {
 		// console.log(res.data)
 		const trendingBlogs = res?.data?.data?.attributes?.blog_posts?.data?.map(formatBlog) ?? []
 
+		console.log("trendingBlogs: ", trendingBlogs);
+		console.log("latestBlog: ", latestBlog);
+		console.log("archiveBlogs: ", archiveBlogs);
+		console.log("blogCategories: ", blogCategories);
+
 		return {
 			props: {
 				latestBlog: latestBlog ?? null,
@@ -72,7 +77,7 @@ export async function getServerSideProps() {
 export default function Blog({ trendingBlogs,latestBlog,blogCategories,archiveBlogs }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
-	const [shownArchiveBlogs, setShownArchiveBlogs] = useState([])
+	const [shownArchiveBlogs, setShownArchiveBlogs] = useState(archiveBlogs)
 
 	// console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
 
