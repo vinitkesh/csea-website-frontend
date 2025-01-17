@@ -18,10 +18,7 @@ export async function getServerSideProps() {
 		let res = await axios.get(`http://127.0.0.1:1337/api/blog-categories`, {
 			params: { 'pagination[pageSize]': 100 },
 		})
-
-		// console.log("process server: ", process.env.NEXT_PUBLIC_BACKEND_URL);
-
-
+		
 		const blogCategories = res?.data?.data?.map((item) => {
 			return { id: item?.id, name: item?.attributes?.name }
 		})	
