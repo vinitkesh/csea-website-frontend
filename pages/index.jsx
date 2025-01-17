@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import TrendingBlogs from '@/components/blog/TrendingBlogs';
 import { formatBlog } from '@/lib/utils';
+import axios from 'axios';
 
 export async function getServerSideProps() {
   try {
