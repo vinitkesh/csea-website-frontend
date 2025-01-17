@@ -37,7 +37,7 @@ export async function getServerSideProps() {
 
 		// Fetching trending blogs
 		res = await axios.get(process.env.TRENDING_API, {
-			params: {  
+			params: {
 				'populate[blog_posts][populate][authors]': '*',
 				'populate[blog_posts][populate][blog_category]': '*',
 				'populate[blog_posts][populate][cover_image]': '*',

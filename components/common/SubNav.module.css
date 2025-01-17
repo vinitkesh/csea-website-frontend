@@ -28,8 +28,8 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	padding-left: 18px;
-	padding-right: 56px;
+	padding-left: 10px;
+	padding-right: clamp(0px,20px,56px);
 	background-color: var(--primary);
 	width: fit-content;
 }

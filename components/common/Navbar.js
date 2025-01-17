@@ -20,7 +20,7 @@ export default function Navbar() {
 
 	return (
 		// <div className={`${styles['navbar-wrapper']} ${scrollDirection === 'down' ? styles['hide-nav'] : ''}`}>
-		<div className={`${styles['navbar-wrapper']} `}>
+		<div className={`${styles['navbar-wrapper']} ${scrollDirection === 'down' ? styles['hide-nav'] : ''}ff`}>
 			<nav className={styles['navbar']}>
 				<Link href='/'>
 					<img className={styles['logo']} src='/svgs/logo-nav.svg' alt='logo' />
@@ -37,5 +37,6 @@ export default function Navbar() {
 				</div>
 			</nav>
 		</div>
+		
 	)
 }

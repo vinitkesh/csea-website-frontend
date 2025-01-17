@@ -1,9 +1,20 @@
 import styles from './Button.module.css'
 
-export default function Button({ text, width, onClick }) {
+export default function Button({ text, width, onClick,link }) {
 	return (
-		<button onClick={onClick} className={styles.container}>
-			{text}
-		</button>
+		link ?
+			(
+			<a href={link}>
+				<button className={styles.container}>
+					{text}
+				</button>
+			</a>
+			)
+		:
+			(
+			<button onClick={onClick} className={styles.container}>
+				{text}
+			</button>
+			)
 	)
 }
