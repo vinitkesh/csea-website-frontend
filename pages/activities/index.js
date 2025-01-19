@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react'
-import { formatEvent } from '@/lib/utils'
+import { firstThree, formatEvent, latestEventsFilter } from '@/lib/utils'
 import Fuse from 'fuse.js'
 import axios from 'axios'
 
@@ -13,18 +13,24 @@ import ActivitiesHorizontal from '@/components/activities/ActivitesHorizontal'
 
 export async function getServerSideProps() {
 	try {
-		let res = await axios.get(process.env.EVENT_CATEGORIES_API,{ params: { 'pagination[pageSize]': 100 }})
+		let res = await axios.get('http://127.0.0.1:1337/api/event-categories', 
+			{ params: { 'populate': '*' } })
+
+		// console.log(res.data)
+
 		const eventCategories = await res?.data?.data?.map((item) => {
 			return { id: item?.id, name: item?.attributes?.name }
 		})
 
-		res = await axios.get(process.env.EVENTS_API, {	params: { 'populate': '*'}})
+		res = await axios.get('http://127.0.0.1:1337/api/events', 
+			{ params: { 'populate': '*' } })
+
 		const events = res?.data?.data?.map(formatEvent)
 		events?.sort((a, b) => {
 			return a?.date < b?.date ? 1 : -1
 		})
 
-		const latestEvents = events;		
+		const latestEvents = firstThree(events);
 
 		return {
 			props: {
@@ -34,19 +40,20 @@ export async function getServerSideProps() {
 			}
 		}
 
-	} catch (err){
+	} catch (err) {
 		console.log("Error: ", err)
 		return {
 			props: {
 				latestEvents: [],
 				eventCategories: [],
+				events: [],
 			},
 		}
 	}
 }
 
 
-export default function Activities({ latestEvents, eventCategories,events }) {
+export default function Activities({ latestEvents, eventCategories, events }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
 	const [shownArchiveEvents, setShownArchiveEvents] = useState([])
@@ -75,7 +82,7 @@ export default function Activities({ latestEvents, eventCategories,events }) {
 		const initialEvents = events || []
 		setShownArchiveEvents(initialEvents)
 	}, [events])
-	
+
 
 	return (
 		<>
@@ -88,7 +95,7 @@ export default function Activities({ latestEvents, eventCategories,events }) {
 				]}
 			/>
 
-			<LatestActivites latestEvents={events} />
+			<LatestActivites latestEvents={latestEvents} />
 
 			<Archive
 				categories={eventCategories}
@@ -104,6 +111,7 @@ export default function Activities({ latestEvents, eventCategories,events }) {
 							tag={item?.event_category?.name || ''}
 							date={item?.date || 'No Date Available'}
 							title={item?.title}
+
 						/>
 					</div>
 				))}

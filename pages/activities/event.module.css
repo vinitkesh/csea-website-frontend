@@ -1,0 +1,12 @@
+.rich-text-wrapper {
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 32px 14px;
+}
+
+@media (max-width: 620px) {
+	.rich-text-wrapper {
+		padding: 24px 14px;
+	}
+}

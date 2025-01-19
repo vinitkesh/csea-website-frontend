@@ -63,10 +63,12 @@
     .container{
         flex-direction: column;
         gap: 16px;
+        width: fit-content;
+        height: fit-content;
     }
 
     .cover {
-        width: 140px;
+        width: 180px;
 	    aspect-ratio: 6 / 9;
     }
     .title{

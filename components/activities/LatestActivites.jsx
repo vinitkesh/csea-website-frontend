@@ -19,11 +19,11 @@ export default function LatestActivites({ latestEvents }) {
 				</div>
 
 				<Latest spacerClassName={styles['slider-spacer']} className={' min-w-full '}>
-					{latestEvents.map((item, index) => (
+					{latestEvents?.map((item, index) => (
 						<div className={styles['blog-post-vertical-wrapper']} key={item?.id}>
 							<ActivitiesVertical
 								index={index + 1}
-								id={item?.id}
+								id={'#' + item?.id}
 								slug={item?.slug}
 								imageUrl={item?.cover_img}
 								tag={item?.event_category?.name}

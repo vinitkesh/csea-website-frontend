@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import styles from './ThreadsExpanded.module.css'
+import Button from '../common/Button'
 
 const ThreadsExpanded = ({edition}) => {
 
@@ -56,6 +57,11 @@ const ThreadsExpanded = ({edition}) => {
                 <span className={styles.key}> SIZE  {` : `}</span>
                 <span className={styles.value}>{(edition?.pdf?.attributes?.size / 1024).toPrecision(3) ?? 'x'} {'MB'}</span>
               </h2>
+              <Button
+                text={'PDF'}
+                link={edition?.link}
+              />
+
             </div>
           </div>
 
