@@ -8,14 +8,36 @@ import { revalidatePath } from 'next/cache'
 import { stringify } from 'querystring'
 import ActivitiesVertical from './ActivitiesVertical'
 import Latest from './Latest'
+import Button from '../common/Button'
+import { useEffect, useState } from 'react'
 
-export default function LatestActivites({ latestEvents }) {
-	if (!(latestEvents)) return <>No data</>
+export default function LatestActivites({ latestEvents, title, more }) {
+	if (!(latestEvents) || latestEvents?.length === 0) return <>No data</>
+
+
+	const [width, setWidth] = useState(1);
+	const [setscrollPosition, setSetscrollPosition] = useState(0)
+	const barwidth = 50;
+
+	useEffect(()=>{
+		const handleScrollPosition = () => {
+			
+		}
+	})
 	
 		return (
 			<section className={styles['trending']} id='events'>
 				<div className={styles['trending-header']}>
-					<SectionTitle title={'Latest'} />
+					<SectionTitle title={title ?? 'Latest'} />
+					{more ?
+					(<div className="px-5">
+						<Button text={'View More'} link={'/activities'} />
+					</div>)
+					: ''}
+				</div>
+
+				<div className={`bar w-[]`}>
+					<div className="completed bg-var[]"></div>
 				</div>
 
 				<Latest spacerClassName={styles['slider-spacer']} className={' min-w-full '}>
@@ -32,7 +54,9 @@ export default function LatestActivites({ latestEvents }) {
 							/>
 						</div>
 					))}
+					
 				</Latest>
+				
 			</section>
 		)
 }

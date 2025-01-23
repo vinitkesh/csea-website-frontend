@@ -1,59 +1,83 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react';
 
-import styles from './Latest.module.css'
+import styles from './Latest.module.css';
 
-let isDragging, prevX
+let isDragging = false;
+let prevX = 0;
 
 export default function Latest({ className, spacerClassName, children }) {
-	const slider = useRef()
+  const slider = useRef();
 
-	useEffect(() => {
-		if (!slider.current) return
+  useEffect(() => {
+    if (!slider.current) return;
 
-		const handleMouseDown = (e) => {
-			console.log('down')
-			isDragging = true
-			prevX = e.pageX
-		}
+    // Mouse events
+    const handleMouseDown = (e) => {
+      isDragging = true;
+      prevX = e.pageX;
+    };
 
-		const handleMouseMove = (e) => {
-			if (!isDragging) return
-			const x = e.pageX - prevX
-			slider.current.scrollLeft -= x
-			prevX = e.pageX
-		}
+    const handleMouseMove = (e) => {
+      if (!isDragging) return;
+      const x = e.pageX - prevX;
+      slider.current.scrollLeft -= x;
+      prevX = e.pageX;
+    };
 
-		const handleMouseUp = () => {
-			isDragging = false
-		}
+    const handleMouseUp = () => {
+      isDragging = false;
+    };
 
-		const handleScroll = (e) => {
-			if (e.deltaX !== 0) {
-				event.preventDefault()
-				slider.current.scrollLeft += e.deltaX
-			}
-		}
+    // Touch events
+    const handleTouchStart = (e) => {
+      isDragging = true;
+      prevX = e.touches[0].pageX;
+    };
 
-		slider?.current?.addEventListener('wheel', handleScroll)
-		slider?.current?.addEventListener('mousedown', handleMouseDown)
-		window.addEventListener('mousemove', handleMouseMove)
-		window.addEventListener('mouseup', handleMouseUp)
+    const handleTouchMove = (e) => {
+      if (!isDragging) return;
+      const x = e.touches[0].pageX - prevX;
+      slider.current.scrollLeft -= x;
+      prevX = e.touches[0].pageX;
+    };
 
-		return () => {
-			slider?.current?.removeEventListener('mousedown', handleMouseDown)
-			window.removeEventListener('mousemove', handleMouseMove)
-			window.removeEventListener('mouseup', handleMouseUp)
-		}
-	}, [slider.current])
+    const handleTouchEnd = () => {
+      isDragging = false;
+    };
 
-	return (
-		<div className={`${styles['slider']} ${className}`} ref={slider}>
-			<div className={`min-w-full w-max grid grid-cols-3 grid-flow-row `}>
-				{/* <div style={{ flexShrink: 0 }} className={spacerClassName}></div> */}
-				{children}
-				{/* <div style={{ flexShrink: 0 }} className={spacerClassName}></div> */}
-			</div>
-		</div>
-	)
+    const handleScroll = (e) => {
+      if (e.deltaX !== 0) {
+        e.preventDefault();
+        slider.current.scrollLeft += e.deltaX;
+      }
+    };
+
+    // Attach event listeners
+    slider?.current?.addEventListener('wheel', handleScroll);
+    slider?.current?.addEventListener('mousedown', handleMouseDown);
+    slider?.current?.addEventListener('touchstart', handleTouchStart);
+    window?.addEventListener('mousemove', handleMouseMove);
+    window?.addEventListener('mouseup', handleMouseUp);
+    window?.addEventListener('touchmove', handleTouchMove);
+    window?.addEventListener('touchend', handleTouchEnd);
+
+    // Cleanup listeners on unmount
+    return () => {
+      slider?.current?.removeEventListener('wheel', handleScroll);
+      slider?.current?.removeEventListener('mousedown', handleMouseDown);
+      slider?.current?.removeEventListener('touchstart', handleTouchStart);
+      window?.removeEventListener('mousemove', handleMouseMove);
+      window?.removeEventListener('mouseup', handleMouseUp);
+      window?.removeEventListener('touchmove', handleTouchMove);
+      window?.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, []);
+
+  return (
+    <div className={`${styles['slider']} ${className}`} ref={slider}>
+      <div className="min-w-full w-max grid grid-cols-3 grid-flow-row">
+        {children}
+      </div>
+    </div>
+  );
 }
-

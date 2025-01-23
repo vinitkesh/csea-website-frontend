@@ -8,26 +8,26 @@
 
 .trending-header {
 	padding: 0 32px;
+	display: flex;
+	gap:10px;
+	align-items: center;
+	justify-content: space-between;
 }
 
 .slider-spacer {
 	width: 32px;
 }
 
-.trending-cards {
-	display: flex;
-	overflow-x: scroll;
-	padding: 0 32px;
-}
 
 .blog-post-vertical-wrapper {
 	padding: 0 16px;
 	border-left: 1px solid var(--border-color);
 	flex-shrink: 0;
 	min-width: 320px;
+	height: max-content;
 }
 
-.blog-post-vertical-wrapper:nth-last-child(2) {
+.blog-post-vertical-wrapper:nth-child(0) {
 	border-right: 1px solid var(--border-color);
 }
 

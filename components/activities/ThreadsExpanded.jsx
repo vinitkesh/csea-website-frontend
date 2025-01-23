@@ -57,10 +57,13 @@ const ThreadsExpanded = ({edition}) => {
                 <span className={styles.key}> SIZE  {` : `}</span>
                 <span className={styles.value}>{(edition?.pdf?.attributes?.size / 1024).toPrecision(3) ?? 'x'} {'MB'}</span>
               </h2>
+              <div className="py-5">
               <Button
                 text={'PDF'}
                 link={edition?.link}
-              />
+              />  
+              </div>
+              
 
             </div>
           </div>

@@ -27,8 +27,8 @@ export async function getServerSideProps() {
 
 		const events = res?.data?.data?.map(formatEvent)
 		events?.sort((a, b) => {
-			return a?.date < b?.date ? 1 : -1
-		})
+			return new Date(b?.date) - new Date(a?.date); // Sort by descending order of date
+		});
 
 		const latestEvents = firstThree(events);
 
@@ -111,6 +111,7 @@ export default function Activities({ latestEvents, eventCategories, events }) {
 							tag={item?.event_category?.name || ''}
 							date={item?.date || 'No Date Available'}
 							title={item?.title}
+							baseUrl={'event'}
 
 						/>
 					</div>
