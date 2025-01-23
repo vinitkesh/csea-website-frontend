@@ -8,9 +8,6 @@
 
 .trending-header {
 	padding: 0 32px;
-	display: flex;
-	align-items: center;
-	gap: 20px;
 }
 
 .slider-spacer {
@@ -27,7 +24,7 @@
 	padding: 0 16px;
 	border-left: 1px solid var(--border-color);
 	flex-shrink: 0;
-	width: 320px;
+	min-width: 320px;
 }
 
 .blog-post-vertical-wrapper:nth-last-child(2) {

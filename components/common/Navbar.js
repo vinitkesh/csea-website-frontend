@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import styles from './Navbar.module.css'
+import { useState } from 'react'
 
 const links = [
 	{ name: 'Home', href: '/' },
@@ -17,10 +18,15 @@ const links = [
 export default function Navbar() {
 	const scrollDirection = useScrollDirection()
 	const router = useRouter()
+	const [menuOpen, setMenuOpen] = useState(false);
+
+	const toggleMenu = () => {
+		setMenuOpen((prev) => !prev);
+	};
 
 	return (
 		// <div className={`${styles['navbar-wrapper']} ${scrollDirection === 'down' ? styles['hide-nav'] : ''}`}>
-		<div className={`${styles['navbar-wrapper']} ${scrollDirection === 'down' ? styles['hide-nav'] : ''}ff`}>
+		<div className={`${styles['navbar-wrapper']} ${scrollDirection === 'down' ? styles['hide-nav'] : ''}`}>
 			<nav className={styles['navbar']}>
 				<Link href='/'>
 					<img className={styles['logo']} src='/svgs/logo-nav.svg' alt='logo' />
@@ -35,6 +41,24 @@ export default function Navbar() {
 						</Link>
 					))}
 				</div>
+
+				<div className={styles['hamburger']} onClick={toggleMenu}>
+					<span className={`${styles['bar']} ${menuOpen ? styles['open'] : ''}`}></span>
+					<span className={`${styles['bar']} ${menuOpen ? styles['open'] : ''}`}></span>
+					<span className={`${styles['bar']} ${menuOpen ? styles['open'] : ''}`}></span>
+				</div>
+
+				<div className={styles['links-wrapper-mobile']} style={{ display: menuOpen ? 'flex' : 'none' }}>
+					{links?.map((item) => (
+						<Link key={item?.href} href={item?.href}>
+							<span className={`${styles['link-mobile']} ${router.pathname === item?.href ? styles['selected-link'] : ''}`} onClick={()=> setMenuOpen(false)}>
+								{item?.name}
+							</span>
+						</Link>
+					))}
+				</div>
+
+
 			</nav>
 		</div>
 		

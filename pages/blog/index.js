@@ -36,11 +36,11 @@ export async function getServerSideProps() {
 		const latestBlog = archiveBlogs?.[0] ;
 
 		// Fetching trending blogs
-		res = await axios.get(process.env.TRENDING_API, {
+		res = await axios.get(`http://127.0.0.1:1337/api/trending-blog`, {
 			params: {
-				'populate[blog_posts][populate][authors]': '*',
 				'populate[blog_posts][populate][blog_category]': '*',
 				'populate[blog_posts][populate][cover_image]': '*',
+				'populate[blog_posts][populate][authors][populate][image]' : '*'
 				}
 		})
 		// console.log(res.data)

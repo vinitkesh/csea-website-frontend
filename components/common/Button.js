@@ -1,14 +1,15 @@
+import Link from 'next/link'
 import styles from './Button.module.css'
 
 export default function Button({ text, width, onClick,link }) {
 	return (
 		link ?
 			(
-			<a href={link}>
+			<Link href={link}>
 				<button className={styles.container}>
 					{text}
 				</button>
-			</a>
+			</Link>
 			)
 		:
 			(

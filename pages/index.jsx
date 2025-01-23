@@ -1,8 +1,13 @@
 import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import TrendingBlogs from '@/components/blog/TrendingBlogs';
-import { formatBlog } from '@/lib/utils';
+import { firstThree, formatBlog, formatEvent } from '@/lib/utils';
 import axios from 'axios';
+import LatestActivites from '@/components/activities/LatestActivites';
+import AboutMain from '@/components/main/AboutMain';
+import Button from '@/components/common/Button';
+import Threads from './activities/threads';
+import ThreadsMain from '@/components/main/Threads';
 
 export async function getServerSideProps() {
   try {
@@ -14,12 +19,21 @@ export async function getServerSideProps() {
 				'populate[blog_posts][populate][cover_image]': '*',
 				}
 		})
-    
 		const trendingBlogs = res?.data?.data?.attributes?.blog_posts?.data?.map(formatBlog) ?? []
-	
+
+
+    res = await axios.get('http://127.0.0.1:1337/api/events', 
+			{ params: { 'populate': '*' } })
+		const events = res?.data?.data?.map(formatEvent)
+		events?.sort((a, b) => {
+      return new Date(b?.date) - new Date(a?.date); // Sort by descending order of date
+  });
+		const latestEvents = firstThree(events);
+
     return {
       props: {
         trendingBlogs: trendingBlogs ?? [],
+        latestEvents: latestEvents ?? []
       }
     };
   } catch (err) {
@@ -28,33 +42,26 @@ export async function getServerSideProps() {
     return {
       props: {
         trendingBlogs: [],
+        latestEvents : []
       }
     };
   }
 }
 
-export default function Home({ trendingBlogs }) {
+export default function Home({ trendingBlogs, latestEvents }) {
 
   return (
     <main>
-      <section className="h-max absolute top-0 flex flex-col justify-center w-full">
-        <div className="my-5">
-          <h1 className="hero-heading w-max3 font-bold text-4xl md:text-5xl px-6">
-            Computer Science
-          </h1>
-          <h1 className="hero-heading w-max3 font-bold text-4xl md:text-5xl px-6">
-            & Engineering
-          </h1>
-          <h1 className="hero-heading w-max3 font-bold text-4xl md:text-5xl px-6">
-            Association
-          </h1>
-        </div>
+      <section className="h-max absolute top-0 flex flex-col justify-center w-full pt-10">
 
-        <div className="hero-img-container relative h-[380px]">
-          <img src="/images/circles.jpg" alt="" className="hero-img" />
-        </div>
+        <AboutMain />
 
-        <TrendingBlogs trendingBlogs={trendingBlogs} />
+
+        <LatestActivites latestEvents={latestEvents} title={'Latest Events'} more />
+        
+        <ThreadsMain />
+
+        <TrendingBlogs trendingBlogs={trendingBlogs} title={'Trending Blogs'} more={true} />
 
       </section>
     </main>

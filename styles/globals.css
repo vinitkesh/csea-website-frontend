@@ -18,6 +18,10 @@
 	--font-inter: 'Inter', sans-serif;
 	--font-ibm: 'IBM Plex Mono', monospace;
 	--font-epilogue: 'Epilogue', sans-serif;
+
+	--marquee-elements-displayed: 6;
+	--marquee-animation-duration: calc(var(--marquee-elements) * 3s);
+
 }
 
 * {
