@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import styles from './GalleryVertical.module.css'
 
-export default function GalleryVertical({ slug, index, imageUrl, tag, date, title }) {
+export default function GalleryVertical({ slug, index, imageUrl, tag, date, title, count }) {
 	return (
 		<Link href={'/gallery/' + slug}>
 			<div className={styles['activities-vertical']}>
@@ -17,7 +17,7 @@ export default function GalleryVertical({ slug, index, imageUrl, tag, date, titl
 						<span className={styles['date']}>{formatDate(date) ?? '--'}</span>
 					</div>
 					<h4 className={styles['title']}>{title ?? '--'}</h4>
-					{/* <p className={styles['description']}>{description ?? '--'}</p> */}
+					<p className={styles['description']}>{count ?? '--'} Images</p>
 					{/* <div className={styles['authors-wrapper']}>
 						{authors?.map((item, index) => (
 							<AuthorChip key={index} imageUrl={item?.imageUrl} name={item?.name} />

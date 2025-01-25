@@ -7,6 +7,7 @@ import TextInput from '@/components/input/TextInput'
 import TextArea from '@/components/input/TextArea'
 import Button from '@/components/common/Button'
 import Tag from '@/components/common/Tag'
+import Form from '@/components/contact/Form'
 
 export default function contact() {
 	return (
@@ -18,12 +19,13 @@ export default function contact() {
 						<div className={styles.ellipse}></div>
 						Message
 					</div>
-					<div className={styles.inputs}>
+					{/* <div className={styles.inputs}>
 						<TextInput label={'Name*'} placeholder={'Name'} />
 						<TextInput label={'Email*'} placeholder={'Email'} />
 						<TextArea label={'Message*'} placeholder={'Message'} />
-						<Button text={'Submit'} />
-					</div>
+						<Button	 text={'Submit'} />
+					</div> */}
+					<Form />
 				</div>
 				<div className={styles.rightWrapper}>
 					<div className={styles.content}>

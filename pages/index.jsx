@@ -12,7 +12,7 @@ import ThreadsMain from '@/components/main/Threads';
 export async function getServerSideProps() {
   try {
 
-    let res = await axios.get(`http://127.0.0.1:1337/api/trending-blog`, {
+    let res = await axios.get(`${process.env.NEXT}/api/trending-blog`, {
 			params: {  
         'populate[blog_posts][populate][authors]': '*',
 				'populate[blog_posts][populate][blog_category]': '*',
@@ -22,7 +22,7 @@ export async function getServerSideProps() {
 		const trendingBlogs = res?.data?.data?.attributes?.blog_posts?.data?.map(formatBlog) ?? []
 
 
-    res = await axios.get('http://127.0.0.1:1337/api/events', 
+    res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events`,
 			{ params: { 'populate': '*' } })
 		const events = res?.data?.data?.map(formatEvent)
 		events?.sort((a, b) => {

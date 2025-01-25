@@ -9,15 +9,16 @@ import SectionTitle from '@/components/common/SectionTitle'
 import BlogPostHorizontal from '@/components/blog/BlogPostHorizontal'
 import Archive from '@/components/common/Archive'
 import LatestGalleries from '@/components/gallery/LatestGalleries'
-import ActivitiesHorizontal from '@/components/activities/ActivitesHorizontal'
+import GalleryHorizontal from '@/components/gallery/GalleryHorizontal'
 // import { log } from 'console'
 
 export async function getServerSideProps() {
 	try {
-		let res = await axios.get('http://127.0.0.1:1337/api/galleries',{
+		let res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}`/api/galleries`,{
 			params: {
 				'populate[event][populate][cover]' : '*',
-				'populate[event][populate][event_category]' : '*'
+				'populate[event][populate][event_category]' : '*',
+				'populate[images]': '*'
 			}
 		})
 		// console.log(res?.data?.data[0].attributes)
@@ -30,14 +31,14 @@ export async function getServerSideProps() {
 		// console.log('galleries');
 		// console.log(galleries?.event);
 
-		res = await axios.get('http://127.0.0.1:1337/api/event-categories', 
+		res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}`/api/event-categories`, 
 			{ params: { 'populate': '*' } })
 
 		const eventCategories = await res?.data?.data?.map((item) => {
 			return { id: item?.id, name: item?.attributes?.name }
 		})
 
-		const latestGalleries = galleries;
+		const latestGalleries = firstThree(galleries);
 		const archiveGallery = galleries;
 
 		return {
@@ -91,28 +92,29 @@ export default function Gallery({ galleries, eventCategories, latestGalleries, a
 			<SubNav
 				pageTitle='Gallery'
 				links={[
-					{ name: 'Feautured', href: '/gallery#featured' },
-					{ name: 'Archive', href: '/gallery#archive' },
+					{ name: 'Feautured', href: '/gallery#featuredGallery' },
+					{ name: 'Archive', href: '/gallery#archiveGallery' },
 				]}
 			/>
 
-			<LatestGalleries latestGalleries={latestGalleries} id='featured' />
+			<LatestGalleries latestGalleries={latestGalleries} id='featuredGallery' />
 
 			<Archive
-				
+				id={'archiveGallery'}
 				categories={eventCategories}
 				onSelectedCategoriesChange={setSelectedCategories}
 				onSearchQueryChange={setSearchQuery}
 			>
 				{shownArchiveGallery?.map((item) => (
 					<div className={styles['blog-post-horizontal-wrapper']} key={item?.id}>
-						<ActivitiesHorizontal
+						<GalleryHorizontal
 							id={item?.id}
 							slug={item?.slug}
 							imageUrl={item?.cover_img}
 							tag={item?.event_category?.name || ''}
 							date={item?.date || 'No Date Available'}
 							title={item?.title}
+							count={item?.count}
 
 						/>
 					</div>

@@ -5,7 +5,7 @@
 }
 
 .image {
-	height: clamp(80px, 11.8vw, 170px);
+	height: clamp(100px, 11.8vw, 170px);
 	aspect-ratio: 10 / 6;
 	background-color: var(--image-bg);
 	background-position: center;
@@ -56,6 +56,15 @@
 	overflow: hidden;
 	max-height: 42px;
 	text-overflow: ellipsis;
+}
+
+.count {
+	font-size: 14px;
+	font-family: 'IBM Plex Mono', monospace;
+	font-weight: 400;
+	text-transform: uppercase;
+	line-height: 0.8;
+	white-space: nowrap;
 }
 
 .authors-wrapper {

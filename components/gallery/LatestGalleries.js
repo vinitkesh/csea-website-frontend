@@ -26,6 +26,7 @@ export default function LatestGalleries({ latestGalleries }) {
 								tag={item?.event_category?.name}
 								date={item?.date}
 								title={item?.title}
+								count={item?.count}
                                 
 							/>
 						</div>

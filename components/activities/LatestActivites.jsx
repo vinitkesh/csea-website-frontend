@@ -9,24 +9,47 @@ import { stringify } from 'querystring'
 import ActivitiesVertical from './ActivitiesVertical'
 import Latest from './Latest'
 import Button from '../common/Button'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function LatestActivites({ latestEvents, title, more }) {
 	if (!(latestEvents) || latestEvents?.length === 0) return <>No data</>
 
 
-	const [width, setWidth] = useState(1);
+	const [width, setWidth] = useState(100);
 	const [setscrollPosition, setSetscrollPosition] = useState(0)
 	const barwidth = 50;
 
-	useEffect(()=>{
-		const handleScrollPosition = () => {
-			
-		}
-	})
+	const latest = useRef(null);
+  	const windowCurrent = useRef(null);
+
+	useEffect(() => {
+		// Function to calculate the width percentage
+		function getWidthPercentage() {
+            if (latest.current) {
+                // Calculate width percentage
+                return (window.innerWidth / latest.current.clientWidth) * 100;
+            }
+            return 50;
+        }
+
+        setWidth(getWidthPercentage());
+	
+		const handleResize = () => {
+            setWidth(getWidthPercentage());
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup listener on component unmount
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+
 	
 		return (
-			<section className={styles['trending']} id='events'>
+			<section className={styles['trending']} id='events' ref={windowCurrent}>
 				<div className={styles['trending-header']}>
 					<SectionTitle title={title ?? 'Latest'} />
 					{more ?
@@ -36,10 +59,13 @@ export default function LatestActivites({ latestEvents, title, more }) {
 					: ''}
 				</div>
 
-				<div className={`bar w-[]`}>
-					<div className="completed bg-var[]"></div>
+				<div className={`bar w-full h-4 bg-blue-100 p-1`}>
+					<div className="completed bg-blue-900 h-full"
+					style={
+						{width: `${width}%` }}
+					></div>
 				</div>
-
+				<div className="latest" ref={latest}>
 				<Latest spacerClassName={styles['slider-spacer']} className={' min-w-full '}>
 					{latestEvents?.map((item, index) => (
 						<div className={styles['blog-post-vertical-wrapper']} key={item?.id}>
@@ -56,6 +82,7 @@ export default function LatestActivites({ latestEvents, title, more }) {
 					))}
 					
 				</Latest>
+				</div>
 				
 			</section>
 		)

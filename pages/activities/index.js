@@ -13,7 +13,7 @@ import ActivitiesHorizontal from '@/components/activities/ActivitesHorizontal'
 
 export async function getServerSideProps() {
 	try {
-		let res = await axios.get('http://127.0.0.1:1337/api/event-categories', 
+		let res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/event-categories`, 
 			{ params: { 'populate': '*' } })
 
 		// console.log(res.data)
@@ -22,7 +22,7 @@ export async function getServerSideProps() {
 			return { id: item?.id, name: item?.attributes?.name }
 		})
 
-		res = await axios.get('http://127.0.0.1:1337/api/events', 
+		res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events`, 
 			{ params: { 'populate': '*' } })
 
 		const events = res?.data?.data?.map(formatEvent)
