@@ -12,7 +12,7 @@ import ThreadsMain from '@/components/main/Threads';
 export async function getServerSideProps() {
   try {
 
-    let res = await axios.get(`${process.env.NEXT}/api/trending-blog`, {
+    let res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trending-blog`, {
 			params: {  
         'populate[blog_posts][populate][authors]': '*',
 				'populate[blog_posts][populate][blog_category]': '*',
@@ -21,8 +21,7 @@ export async function getServerSideProps() {
 		})
 		const trendingBlogs = res?.data?.data?.attributes?.blog_posts?.data?.map(formatBlog) ?? []
 
-
-    res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events`,
+    res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events`, 
 			{ params: { 'populate': '*' } })
 		const events = res?.data?.data?.map(formatEvent)
 		events?.sort((a, b) => {
@@ -55,10 +54,7 @@ export default function Home({ trendingBlogs, latestEvents }) {
       <section className="h-max absolute top-0 flex flex-col justify-center w-full pt-10">
 
         <AboutMain />
-
-
         <LatestActivites latestEvents={latestEvents} title={'Latest Events'} more />
-        
         <ThreadsMain />
 
         <TrendingBlogs trendingBlogs={trendingBlogs} title={'Trending Blogs'} more={true} />

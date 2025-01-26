@@ -10,13 +10,12 @@ export default function EventHeader({ id, slug, imageUrl, tag, date, title, desc
 	return (
 		<div className={styles['event-post-header']}>
 			<div className={styles['top']}>
-				<SectionTitle title={'Event'} />
 				
 				<div className={styles['header-container'] }>
 					<div className={styles['card']}>
-						{/* <div className={styles['image-wrapper']}>
+						<div className={styles['image-wrapper']}>
 							<div className={styles['image']} style={{ backgroundImage: `url(${imageUrl})` }}></div>
-						</div> */}
+						</div>
 						<div className={styles['tag-date-wrapper']}>
 							<Tag value={tag} />
 							<span className={styles['date']}>{formatDate(date) ?? '--'}</span>

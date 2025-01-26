@@ -3,6 +3,7 @@
 	max-width: 100%;
 	height: max-content;
 	padding: 16px 0;
+	padding-bottom: 44px;
 	border-bottom: 1px solid var(--border-color);
 }
 
@@ -12,11 +13,13 @@
 	padding: 0 32px;
 	padding-top: 16px;
 	flex: 1;
+
+	gap:40px;
+	margin-left: 100px;
 }
 
 .header-container{
 	width: 100%;
-
 	display: flex;
 	align-items: center;
 	justify-items: center;
@@ -25,8 +28,10 @@
 .image-wrapper {	
 	width: 300px;		
 	padding: 24px 0px;							
-	/* border-top: 1px solid var(--border-color); */
+	border: 1px solid var(--border-color);
 	flex: 1;
+
+	margin-bottom: 25px;
 }
 
 .image {
@@ -52,7 +57,7 @@
 	flex-direction: column;
 	max-width: 800px;
 
-	margin-right: 300px;
+	/* margin-right: 300px; */
 	padding: 0 12px;
 
 }
@@ -121,8 +126,11 @@
 @media (max-width: 800px){
 	.top{
 		flex-direction: column;
-		gap: 0;
+		gap: 15px;
 		padding: 0 8px ;
+		margin-left: 0px;
+		margin-top: 40px;
+
 	}
 	.card{
 		margin: 0;

@@ -17,9 +17,10 @@
     width: 240px;
 	aspect-ratio: 6 / 9;
 	background-color: var(--image-bg);
+    background-size: cover;
     background-position: center;
-	background-size:contain;
-    flex-grow: 1;
+    background-repeat: no-repeat;
+    /* flex-grow: 1; */
 }
 
 .title{

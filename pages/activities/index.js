@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react'
-import { firstThree, formatEvent, latestEventsFilter } from '@/lib/utils'
+import { firstThree, firstX, formatEvent, latestEventsFilter } from '@/lib/utils'
 import Fuse from 'fuse.js'
 import axios from 'axios'
 
@@ -13,24 +13,20 @@ import ActivitiesHorizontal from '@/components/activities/ActivitesHorizontal'
 
 export async function getServerSideProps() {
 	try {
-		let res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/event-categories`, 
-			{ params: { 'populate': '*' } })
-
-		// console.log(res.data)
+		let res = await axios.get(`https://arete.assoc.cse.nitc.ac.in/api/event-categories?populate=*`)
 
 		const eventCategories = await res?.data?.data?.map((item) => {
 			return { id: item?.id, name: item?.attributes?.name }
 		})
 
-		res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/events`, 
-			{ params: { 'populate': '*' } })
+		res = await axios.get(`https://arete.assoc.cse.nitc.ac.in/api/events?populate=*`)
 
 		const events = res?.data?.data?.map(formatEvent)
 		events?.sort((a, b) => {
 			return new Date(b?.date) - new Date(a?.date); // Sort by descending order of date
 		});
 
-		const latestEvents = firstThree(events);
+		const latestEvents = firstX(events, 3);
 
 		return {
 			props: {
@@ -58,12 +54,12 @@ export default function Activities({ latestEvents, eventCategories, events }) {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [shownArchiveEvents, setShownArchiveEvents] = useState([])
 
-	// console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
+	console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
 
 	useEffect(() => {
 		const categoryFiltered = events?.filter((item) => {
 			if (selectedCategories?.length == 0) return true
-			return selectedCategories?.includes(item?.event_category?.id)
+			return selectedCategories?.includes(item?.event_category?.id ?? null)
 		})
 
 		if (!searchQuery) {

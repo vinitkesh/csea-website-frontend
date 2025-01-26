@@ -6,10 +6,16 @@ import RichText from '@/components/common/RichText'
 import styles from './event.module.css'
 import EventHeader from '@/components/event/EventHeader'
 import Link from 'next/link'
+import SectionTitle from '@/components/common/SectionTitle'
 
 export default function Event({ event,slug }) {
 	return (
 		<div className={styles['event-post']}>
+			<div className='absolute top-2 left-2'>
+				<SectionTitle title={'Event'} />
+			</div>
+			
+
 			<EventHeader
 				id={event?.id}
 				slug={event?.slug}
@@ -19,15 +25,16 @@ export default function Event({ event,slug }) {
 				tag={event?.event_category?.name}
 				date={event?.date}
 				title={event?.title}
+				body={event?.body}
 			/>
 			
 			<div className={styles['rich-text-wrapper']}>
-				<div className='galleryLink w-full bg-[#EEF9FF] h-20 flex items-center p-2'>
+				<div className='galleryLink w-full bg-[#EEF9FF] h-20 flex items-center p-4'>
 					<div className='w-full flex flex-col h-full'>
 						<h3 className='font-epilogue text-2xl'>Gallery</h3>
 						<p  className='font-inter text-sm'>View this event's gallery</p>
 					</div>
-					<div className='w-max px-4 py-0  h-max border-l border-[var(--border-color)]'>
+					<div className='w-max px-4 py-0  h-max border-l border-[var(--border-color)] cursor-pointer transition-transform hover:-translate-y-1 '>
 						<Link href={`/gallery/${slug}`} className='bg-[var(--primary)] p-2 px-4 rounded-full text-white'>VIEW</Link>
 					</div>
 

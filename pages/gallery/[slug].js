@@ -4,15 +4,19 @@ import axios from 'axios'
 import styles from '../event/event.module.css'
 import EventHeader from '@/components/event/EventHeader'
 import ImageGrid from '@/components/gallery/ImageGrid'
+import SectionTitle from '@/components/common/SectionTitle'
 
 export default function Event({ event,slug, images }) {
 	return (
 		<div className={styles['event-post']}>
+			<div className='absolute top-2 left-2'>
+				<SectionTitle title={'Event'} />
+			</div>
 			<EventHeader
 				id={event?.id}
 				slug={event?.slug}
 				imageUrl={event?.cover_img}
-				description={images.length ?? 0}
+				description={images?.length ?? 0}
 				event_category={event?.event_category}
 				tag={event?.event_category?.name}
 				date={event?.date}
