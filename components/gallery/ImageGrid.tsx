@@ -16,18 +16,24 @@ const ImageGrid = ({images}) => {
     <div className={` ${styles['grid-wrapper']}`}>
       <div className={`${styles['images-wrapper']}`}>
         {images?.map((item, id) => (
-            item.thumbnail ? 
-              <div 
-              key={id}
-                id={item.id} 
-                className={`${styles['image']}`} 
-                onClick={() => openModal(item.id, item.url)}
-                style={{ backgroundImage: `url(${item.thumbnail})` }} 
-              >
+            
+            <div className=" border-[var(--border-color)] border-1 border-t py-2">
+              <div className=" border-[var(--border-color)] border-1 border-l border-r px-2">
+                {item.thumbnail ? 
+                (<div 
+                  key={id}
+                  id={item.id} 
+                  className={`${styles['image']}  `} 
+                  onClick={() => openModal(item.id, item.url)}
+                  style={{ backgroundImage: `url(${item.thumbnail})` }} 
+                >
+                </div>)
+                :
+                (<div className={`${styles['image']}`} key={id}>
+                </div>)}
+
               </div>
-              :
-              <div className={`${styles['image']}`} key={id}>
-              </div>
+            </div>
             
           
         ))}
@@ -38,8 +44,8 @@ const ImageGrid = ({images}) => {
           style={{background : `url(${modalUrl})`}}>
         </div> */}
         <img src={modalUrl} className={`${styles['modal-image']}`} alt="" />
-        <button className='w-10 h-10 absolute top-0 right-0 m-2 text-xl text-white bg-black rounded-full' 
-        onClick={()=>{setModalOpen(false)}}>x</button>
+        <button className='w-8 h-8 absolute top-0 right-0 m-2 text-sm flex items-center justify-center text-white bg-black rounded-full' 
+        onClick={()=>{setModalOpen(false)}}>X</button>
       </div>
     </div>
   )

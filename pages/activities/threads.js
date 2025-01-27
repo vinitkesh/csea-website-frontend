@@ -78,8 +78,6 @@ export default function Threads({ editions, threads }) {
 				<ThreadsExpanded edition={activeEditionData} />	
 			</div>
 
-			
-
 			<div style={{ height: 400 }}></div>
 		</>
 	)

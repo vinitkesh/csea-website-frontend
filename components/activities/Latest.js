@@ -112,7 +112,7 @@ export default function Latest({ className, spacerClassName, children, passRef }
   return (
     <div className='flex flex-col justify-end items-end gap-4'>
       {/* Progress bar */}
-      <div className={`bar w-[30%] h-4 border-[var(--border-color)] border p-1 relative mx-4`}>
+      <div className={`bar w-[30%] h-4 border-[var(--border-color)] border p-1 relative mx-4 ${width<100 ? 'flex' : 'hidden' }`}>
         <div
           className=" completed absolute bg-[var(--primary)] h-2 top-1"
           style={{

@@ -2,9 +2,9 @@ import { formatBlog, formatEvent, formatImages } from '@/lib/utils'
 import axios from 'axios'
 
 import styles from '../event/event.module.css'
-import EventHeader from '@/components/event/EventHeader'
 import ImageGrid from '@/components/gallery/ImageGrid'
 import SectionTitle from '@/components/common/SectionTitle'
+import GalleryHeader from '@/components/gallery/GalleryHeader'
 
 export default function Event({ event,slug, images }) {
 	return (
@@ -12,7 +12,7 @@ export default function Event({ event,slug, images }) {
 			<div className='absolute top-2 left-2'>
 				<SectionTitle title={'Event'} />
 			</div>
-			<EventHeader
+			<GalleryHeader
 				id={event?.id}
 				slug={event?.slug}
 				imageUrl={event?.cover_img}

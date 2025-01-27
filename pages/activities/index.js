@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState } from 'react'
 import { firstThree, firstX, formatEvent, latestEventsFilter } from '@/lib/utils'
 import Fuse from 'fuse.js'
