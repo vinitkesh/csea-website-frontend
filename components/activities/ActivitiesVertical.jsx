@@ -10,7 +10,7 @@ export default function ActivitiesVertical({ slug, index, imageUrl, tag, date, t
 		<Link href={'/event/' + slug}>
 			<div className={styles['activities-vertical']}>
 				<span className={styles['index']}>{formatIndex(index)}</span>
-				<div className={styles['image']} style={{ backgroundImage: `url(${imageUrl})` }}></div>
+				<div className={styles['image']} style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover' }}></div>
 				<div className={styles['top']}>
 					<div className={styles['tag-date-wrapper']}>
 						<Tag value={tag} />

@@ -5,9 +5,10 @@ import Link from 'next/link'
 
 import styles from './ActivitiesHorizontal.module.css'
 
-export default function ActivitiesHorizontal({ slug, imageUrl, tag, date, title }) {
+export default function ActivitiesHorizontal({ slug, imageUrl, tag, date, title, baseUrl }) {
 	return (
-		<Link href={'/activities/' + slug}>
+		<>
+		<Link href={`/${baseUrl}/` + slug}>
 			<div className={styles['blog-post-horizontal']}>
 				<div className={styles['image']} style={{ backgroundImage: `url(${imageUrl})` }}></div>
 				<div className={styles['right']}>
@@ -19,5 +20,6 @@ export default function ActivitiesHorizontal({ slug, imageUrl, tag, date, title 
 				</div>
 			</div>
 		</Link>
+		</>
 	)
 }

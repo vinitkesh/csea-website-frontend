@@ -20,7 +20,7 @@ export default function BlogPostVertical({ slug, index, imageUrl, tag, date, tit
 					<p className={styles['description']}>{description ?? '--'}</p>
 					<div className={styles['authors-wrapper']}>
 						{authors?.map((item, index) => (
-							<AuthorChip key={index} imageUrl={item?.imageUrl} name={item?.name} />
+							<AuthorChip key={index} imageUrl={item?.image_url} name={item?.name} />
 						))}
 					</div>
 				</div>

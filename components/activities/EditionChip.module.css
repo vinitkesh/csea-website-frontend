@@ -1,5 +1,5 @@
 .container{
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     height: 40px;
     width: 260px;
     display: flex;
@@ -20,4 +20,40 @@
 .selected{
     background-color: var(--primary);
     color: white;
+}
+
+.selectedMobile{
+    background-color: var(--primary);
+    color: white;
+}
+
+.containerMobile{
+    display: none;
+    height: 40px;
+    width: 200px;
+    align-items: center;
+    justify-content: center;
+    padding-right: 10px;
+
+    font-family: 'IBM Plex Mono', monospace;
+	font-size: 14px;
+	text-transform: uppercase;
+	line-height: 1;
+	margin-top: 4px;
+    font-weight: normal;
+
+    cursor: pointer;
+}
+
+@media screen and (max-width:700px){
+    .container{
+        display: none;
+    }
+    .containerMobile{
+        display: flex;
+    }
+    .selectedMobile{
+        background-color: var(--primary);
+        color: white;
+    }
 }

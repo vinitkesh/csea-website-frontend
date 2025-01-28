@@ -1,7 +1,5 @@
-'use client';
-
 import { useEffect, useState } from 'react'
-import { formatEvent } from '@/lib/utils'
+import { firstThree, firstX, formatEvent, latestEventsFilter } from '@/lib/utils'
 import Fuse from 'fuse.js'
 import axios from 'axios'
 
@@ -13,18 +11,20 @@ import ActivitiesHorizontal from '@/components/activities/ActivitesHorizontal'
 
 export async function getServerSideProps() {
 	try {
-		let res = await axios.get(process.env.EVENT_CATEGORIES_API,{ params: { 'pagination[pageSize]': 100 }})
+		let res = await axios.get(`https://arete.assoc.cse.nitc.ac.in/api/event-categories?populate=*`)
+
 		const eventCategories = await res?.data?.data?.map((item) => {
 			return { id: item?.id, name: item?.attributes?.name }
 		})
 
-		res = await axios.get(process.env.EVENTS_API, {	params: { 'populate': '*'}})
+		res = await axios.get(`https://arete.assoc.cse.nitc.ac.in/api/events?populate=*`)
+
 		const events = res?.data?.data?.map(formatEvent)
 		events?.sort((a, b) => {
-			return a?.date < b?.date ? 1 : -1
-		})
+			return new Date(b?.date) - new Date(a?.date); // Sort by descending order of date
+		});
 
-		const latestEvents = events;		
+		const latestEvents = firstX(events, 3);
 
 		return {
 			props: {
@@ -34,29 +34,30 @@ export async function getServerSideProps() {
 			}
 		}
 
-	} catch (err){
+	} catch (err) {
 		console.log("Error: ", err)
 		return {
 			props: {
 				latestEvents: [],
 				eventCategories: [],
+				events: [],
 			},
 		}
 	}
 }
 
 
-export default function Activities({ latestEvents, eventCategories,events }) {
+export default function Activities({ latestEvents, eventCategories, events }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
 	const [shownArchiveEvents, setShownArchiveEvents] = useState([])
 
-	// console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
+	console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
 
 	useEffect(() => {
 		const categoryFiltered = events?.filter((item) => {
 			if (selectedCategories?.length == 0) return true
-			return selectedCategories?.includes(item?.event_category?.id)
+			return selectedCategories?.includes(item?.event_category?.id ?? null)
 		})
 
 		if (!searchQuery) {
@@ -75,7 +76,7 @@ export default function Activities({ latestEvents, eventCategories,events }) {
 		const initialEvents = events || []
 		setShownArchiveEvents(initialEvents)
 	}, [events])
-	
+
 
 	return (
 		<>
@@ -88,7 +89,7 @@ export default function Activities({ latestEvents, eventCategories,events }) {
 				]}
 			/>
 
-			<LatestActivites latestEvents={events} />
+			<LatestActivites latestEvents={latestEvents} />
 
 			<Archive
 				categories={eventCategories}
@@ -104,6 +105,8 @@ export default function Activities({ latestEvents, eventCategories,events }) {
 							tag={item?.event_category?.name || ''}
 							date={item?.date || 'No Date Available'}
 							title={item?.title}
+							baseUrl={'event'}
+
 						/>
 					</div>
 				))}

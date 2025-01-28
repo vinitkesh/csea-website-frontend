@@ -6,6 +6,7 @@ import styles from './TrendingBlogs.module.css'
 import { env } from 'process'
 import { revalidatePath } from 'next/cache'
 import { stringify } from 'querystring'
+import Button from '../common/Button'
 
 // export async function getStaticProps() {
 // 	const res = await fetch( env.BACKEND_API + '/trending-blog');
@@ -20,7 +21,7 @@ import { stringify } from 'querystring'
 // 	};
 // }
 
-export default function TrendingBlogs({ trendingBlogs }) {
+export default function TrendingBlogs({ trendingBlogs, title, more }) {
 	if (!(trendingBlogs)) return <>No data</>
 	// console.log('trending blog data : ',trendingBlogs)
 	// else
@@ -28,7 +29,9 @@ export default function TrendingBlogs({ trendingBlogs }) {
 		return (
 			<section className={styles['trending']} id='trending'>
 				<div className={styles['trending-header']}>
-					<SectionTitle title={'Trending'} />
+					<SectionTitle title={title ?? 'Trending'} />
+					{more ? <Button text={'View More'} link={'/blog'} /> : ''}
+					
 				</div>
 
 				<Slider spacerClassName={styles['slider-spacer']}>

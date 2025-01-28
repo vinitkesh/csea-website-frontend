@@ -5,6 +5,7 @@
 
 .sub-nav {
 	height: var(--sub-nav-height);
+	max-width: 100%;
 	padding: 5px 0;
 	border-bottom: 1px solid var(--border-color);
 	display: flex;
@@ -15,8 +16,9 @@
 	left: 0;
 	width: 100%;
 	background-color: var(--white);
-	z-index: 99;
+	z-index: 98;
 	transition: 0.3s ease all;
+	text-wrap: nowrap;
 }
 
 .hide-nav .sub-nav {
@@ -28,8 +30,8 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	padding-left: 18px;
-	padding-right: 56px;
+	padding-left: 10px;
+	padding-right: clamp(0px,20px,56px);
 	background-color: var(--primary);
 	width: fit-content;
 }
@@ -51,7 +53,19 @@
 	display: flex;
 	align-items: center;
 	gap: 24px;
+	width: max-content;
+	overflow-x: scroll;
 }
+
+.links-wrapper::-webkit-scrollbar {
+	display: none;
+}
+
+.links-wrapper {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+}
+
 
 .link {
 	font-family: 'IBM Plex Mono', monospace;

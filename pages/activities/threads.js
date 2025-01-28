@@ -17,6 +17,7 @@ export async function getServerSideProps() {
 			release_date: item?.attributes?.release_date,
 			pdf: item?.attributes?.pdf?.data,
 			cover: (process.env.NEXT_PUBLIC_BACKEND_URL + (item?.attributes?.cover?.data?.attributes?.formats?.large?.url ?? item?.attributes?.cover?.data?.attributes?.url)),
+			link : (process.env.NEXT_PUBLIC_BACKEND_URL + (item?.attributes?.pdf?.data?.attributes?.url)) ?? '#',
 		}))
 
 		// Extract threads
@@ -65,7 +66,7 @@ export default function Threads({ editions, threads }) {
 				]}
 			/>
 
-			<div className='flex w-full h-max'>
+			<div className='flex w-full h-max '>
 				{/* Threads Navigation */}
 				<ThreadsNav
 					editions={editions}
@@ -76,8 +77,6 @@ export default function Threads({ editions, threads }) {
 				{/* Render Singular Thread */}
 				<ThreadsExpanded edition={activeEditionData} />	
 			</div>
-
-			
 
 			<div style={{ height: 400 }}></div>
 		</>

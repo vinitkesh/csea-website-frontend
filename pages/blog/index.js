@@ -15,19 +15,16 @@ import styles from './blog.module.css'
 export async function getServerSideProps() {
 	try {
 		// Fetching blog categories
-		let res = await axios.get(`http://127.0.0.1:1337/api/blog-categories`, {
+		let res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog-categories`, {
 			params: { 'pagination[pageSize]': 100 },
 		})
-
-		// console.log("process server: ", process.env.NEXT_PUBLIC_BACKEND_URL);
-
-
+		
 		const blogCategories = res?.data?.data?.map((item) => {
 			return { id: item?.id, name: item?.attributes?.name }
 		})	
 
 		// Fetching all blogs
-		res = await axios.get(`http://127.0.0.1:1337/api/blog-posts`, {
+		res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog-posts`, {
 			params: { 'pagination[pageSize]': 100, populate: '*', sort: 'createdAt:desc' },
 		})
 
@@ -39,15 +36,20 @@ export async function getServerSideProps() {
 		const latestBlog = archiveBlogs?.[0] ;
 
 		// Fetching trending blogs
-		res = await axios.get(process.env.TRENDING_API, {
-			params: {  
-				'populate[blog_posts][populate][authors]': '*',
+		res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/trending-blog`, {
+			params: {
 				'populate[blog_posts][populate][blog_category]': '*',
 				'populate[blog_posts][populate][cover_image]': '*',
+				'populate[blog_posts][populate][authors][populate][image]' : '*'
 				}
 		})
 		// console.log(res.data)
 		const trendingBlogs = res?.data?.data?.attributes?.blog_posts?.data?.map(formatBlog) ?? []
+
+		console.log("trendingBlogs: ", trendingBlogs);
+		console.log("latestBlog: ", latestBlog);
+		console.log("archiveBlogs: ", archiveBlogs);
+		console.log("blogCategories: ", blogCategories);
 
 		return {
 			props: {
@@ -75,7 +77,7 @@ export async function getServerSideProps() {
 export default function Blog({ trendingBlogs,latestBlog,blogCategories,archiveBlogs }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
-	const [shownArchiveBlogs, setShownArchiveBlogs] = useState([])
+	const [shownArchiveBlogs, setShownArchiveBlogs] = useState(archiveBlogs)
 
 	// console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
 

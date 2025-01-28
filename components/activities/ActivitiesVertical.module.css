@@ -2,7 +2,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	max-width: 370px;
+	max-width: 320px;
 }
 
 .index {
@@ -16,9 +16,9 @@
 	width: 100%;
 	aspect-ratio: 12 / 9;
 	background-color: var(--image-bg);
-	background-position: center;
-	background-size: cover;
-	flex-shrink: 0;
+	/* background-position: center;
+	background-size: cover; */
+	/* flex-shrink: 0; */
 }
 
 .top {

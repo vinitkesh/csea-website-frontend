@@ -1,110 +1,125 @@
 import { useEffect, useState } from 'react'
-import { formatBlog } from '@/lib/utils'
+import { firstThree, formatGallery, latestEventsFilter } from '@/lib/utils'
 import Fuse from 'fuse.js'
 import axios from 'axios'
 
 import styles from './gallery.module.css'
 import SubNav from '@/components/common/SubNav'
 import SectionTitle from '@/components/common/SectionTitle'
+import BlogPostHorizontal from '@/components/blog/BlogPostHorizontal'
+import Archive from '@/components/common/Archive'
+import LatestGalleries from '@/components/gallery/LatestGalleries'
+import GalleryHorizontal from '@/components/gallery/GalleryHorizontal'
+// import { log } from 'console'
 
-// export async function getServerSideProps() {
-// 	// try {
-		
-// 	// } catch {
-// 	// 	return {
-// 	// 		props: {
-// 	// 			latestBlog: null,
-// 	// 			trendingBlogs: [],
-// 	// 			archiveBlogs: [],
-// 	// 			eventCategories: [],
-// 	// 		},
-// 	// 	}
-// 	// }
+export async function getServerSideProps() {
+	try {
+		let res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/galleries` ,{
+			params: {
+				'populate[event][populate][cover]' : '*',
+				'populate[event][populate][event_category]' : '*',
+				'populate[images]': '*'
+			}
+		})
+		// console.log(res?.data?.data[0].attributes)
+		const galleries = res?.data?.data?.map(formatGallery);
 
-// 	// return {
-// 	// 	props: {
-// 	// 		latestBlog: null,
-// 	// 		trendingBlogs: [],
-// 	// 		archiveBlogs: [],
-// 	// 		eventCategories: [],
-// 	// 	},
-// 	// }
-// }
+		galleries?.sort((a, b) => {
+			return a?.date < b?.date ? 1 : -1
+		})
+
+		// console.log('galleries');
+		// console.log(galleries?.event);
+
+		res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/event-categories`, 
+			{ params: { 'populate': '*' } })
+
+		const eventCategories = await res?.data?.data?.map((item) => {
+			return { id: item?.id, name: item?.attributes?.name }
+		})
+
+		const latestGalleries = firstThree(galleries);
+		const archiveGallery = galleries;
+
+		return {
+			props:{
+				galleries : galleries ?? [],
+				eventCategories : eventCategories ?? [],
+				latestGalleries : latestGalleries ?? [],
+				archiveGallery: archiveGallery ?? []
+			}
+		}
+
+	} catch {
+		return {
+			props: {
+				galleries : [],
+				eventCategories : [],
+				latestGalleries : [],
+				archiveGallery : []
+			}
+		}
+	}
+}
 
 
-export default function Gallery({  }) {
+export default function Gallery({ galleries, eventCategories, latestGalleries, archiveGallery }) {
 	const [selectedCategories, setSelectedCategories] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
-	const [shownArchiveBlogs, setShownArchiveBlogs] = useState([])
+	const [shownArchiveGallery, setShownArchiveGallery] = useState([])
 
 	// console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
 
-	// useEffect(() => {
-	// 	const categoryFiltered = archiveBlogs?.filter((item) => {
-	// 		if (selectedCategories?.length == 0) return true
-	// 		return selectedCategories?.includes(item?.blog_category?.id)
-	// 	})
+	useEffect(() => {
+		const categoryFiltered = archiveGallery?.filter((item) => {
+			if (selectedCategories?.length == 0) return true
+			return selectedCategories?.includes(item?.event_category?.id)
+		})
 
-	// 	if (!searchQuery) {
-	// 		setShownArchiveBlogs(categoryFiltered)
-	// 		return
-	// 	}
+		if (!searchQuery) {
+			setShownArchiveGallery(categoryFiltered)
+			return
+		}
 
-	// 	const fuse = new Fuse(categoryFiltered, { includeScore: true, keys: ['title'] })
-	// 	const result = fuse.search(searchQuery).map((item) => item.item)
+		const fuse = new Fuse(categoryFiltered, { includeScore: true, keys: ['title'] })
+		const result = fuse.search(searchQuery).map((item) => item.item)
 
-	// 	setShownArchiveBlogs(result)
-	// }, [shownArchiveBlogs, selectedCategories, searchQuery])
+		setShownArchiveGallery(result)
+	}, [shownArchiveGallery, selectedCategories, searchQuery])
 
 	return (
 		<>
 			<SubNav
 				pageTitle='Gallery'
 				links={[
-					{ name: 'Feautured', href: '/gallery#featured' },
-					{ name: 'Archive', href: '/gallery#archive' },
+					{ name: 'Feautured', href: '/gallery#featuredGallery' },
+					{ name: 'Archive', href: '/gallery#archiveGallery' },
 				]}
 			/>
-			<header className={styles['header']} id='latest'>
-				<div className={styles['header-left']}>
-					<SectionTitle title={'Latest'} />
-				</div>
-				<div className={styles['header-right']}>
-					{/* <BlogPostBig
-						id={latestBlog?.id}
-						slug={latestBlog?.slug}
-						imageUrl={latestBlog?.cover_image_url}
-						tag={latestBlog?.blog_category?.name}
-						date={latestBlog?.publish_date}
-						title={latestBlog?.title}
-						description={latestBlog?.description}
-						authors={latestBlog?.authors}
-					/> */}
-				</div>
-			</header>
 
-			{/* <TrendingBlogs trendingBlogs={trendingBlogs} />
+			<LatestGalleries latestGalleries={latestGalleries} id='featuredGallery' />
 
 			<Archive
+				id={'archiveGallery'}
 				categories={eventCategories}
 				onSelectedCategoriesChange={setSelectedCategories}
 				onSearchQueryChange={setSearchQuery}
 			>
-				{shownArchiveBlogs?.map((item) => (
+				{shownArchiveGallery?.map((item) => (
 					<div className={styles['blog-post-horizontal-wrapper']} key={item?.id}>
-						<BlogPostHorizontal
+						<GalleryHorizontal
 							id={item?.id}
 							slug={item?.slug}
-							imageUrl={item?.cover_image_url}
-							tag={item?.blog_category?.name}
-							date={item?.publish_date}
+							imageUrl={item?.cover_img}
+							tag={item?.event_category?.name || ''}
+							date={item?.date || 'No Date Available'}
 							title={item?.title}
-							description={item?.description}
-							authors={item?.authors}
+							count={item?.count}
+
 						/>
 					</div>
 				))}
-			</Archive> */}
+			</Archive>
 
 			<div style={{ height: 400 }}></div>
 		</>
