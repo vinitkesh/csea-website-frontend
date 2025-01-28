@@ -14,7 +14,7 @@ import GalleryHorizontal from '@/components/gallery/GalleryHorizontal'
 
 export async function getServerSideProps() {
 	try {
-		let res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/galleries` ,{
+		let res = await axios.get(`https://arete.assoc.cse.nitc.ac.in/api/galleries` ,{
 			params: {
 				'populate[event][populate][cover]' : '*',
 				'populate[event][populate][event_category]' : '*',
@@ -31,7 +31,7 @@ export async function getServerSideProps() {
 		// console.log('galleries');
 		// console.log(galleries?.event);
 
-		res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/event-categories`, 
+		res = await axios.get(`https://arete.assoc.cse.nitc.ac.in/api/event-categories`, 
 			{ params: { 'populate': '*' } })
 
 		const eventCategories = await res?.data?.data?.map((item) => {
@@ -68,7 +68,6 @@ export default function Gallery({ galleries, eventCategories, latestGalleries, a
 	const [searchQuery, setSearchQuery] = useState('')
 	const [shownArchiveGallery, setShownArchiveGallery] = useState([])
 
-	// console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
 
 	useEffect(() => {
 		const categoryFiltered = archiveGallery?.filter((item) => {

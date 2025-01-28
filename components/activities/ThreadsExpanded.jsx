@@ -4,7 +4,7 @@ import Button from '../common/Button'
 
 const ThreadsExpanded = ({ edition }) => {
 
-  console.log('current edition', edition)
+  // console.log('current edition', edition)
 
   function numberSuffix(number) {
     if (!number) return

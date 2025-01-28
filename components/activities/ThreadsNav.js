@@ -16,7 +16,7 @@ const ThreadsNav = ({ editions, activeEdition, setActiveEdition }) => {
                     number={item?.edition}
                     onClick={() => {
                         setActiveEdition(item?.edition)
-                        console.log('Set Active Edition as: ', item?.edition)
+                        // console.log('Set Active Edition as: ', item?.edition)
                     }}
                     isSelected={activeEdition === item?.edition} // Fixed comparison
                     date={getMonthYear(item?.release_date ?? new Date())} // Fixed date formatting

@@ -52,7 +52,6 @@ export default function Activities({ latestEvents, eventCategories, events }) {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [shownArchiveEvents, setShownArchiveEvents] = useState([])
 
-	console.log("process: ", process.env.NEXT_PUBLIC_BACKEND_URL);
 
 	useEffect(() => {
 		const categoryFiltered = events?.filter((item) => {
@@ -61,7 +60,7 @@ export default function Activities({ latestEvents, eventCategories, events }) {
 		})
 
 		if (!searchQuery) {
-			console.log("categoryFiltered: ", categoryFiltered)
+			// console.log("categoryFiltered: ", categoryFiltered)
 			setShownArchiveEvents(categoryFiltered)
 			return
 		}

@@ -49,7 +49,7 @@ export async function getServerSideProps(context) {
 	try {
 		const slug = context.params?.slug
 		let res = await axios.get(
-			`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/?filters[slug][$eq]=${slug}&populate=*`
+			`https://arete.assoc.cse.nitc.ac.in/api/events/?filters[slug][$eq]=${slug}&populate=*`
 		)
 
 		const events = res?.data?.data?.map(formatEvent)
