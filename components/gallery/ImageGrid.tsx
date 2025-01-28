@@ -17,8 +17,8 @@ const ImageGrid = ({images}) => {
       <div className={`${styles['images-wrapper']}`}>
         {images?.map((item, id) => (
             
-            <div className=" border-[var(--border-color)] border-1 border-t py-2">
-              <div className=" border-[var(--border-color)] border-1 border-l border-r px-2">
+            <div className=" border-[var(--border-color)] border-1 border-t py-2" key={id}>
+              <div className=" border-[var(--border-color)] border-1 border-l border-r px-2" key={id}>
                 {item.thumbnail ? 
                 (<div 
                   key={id}

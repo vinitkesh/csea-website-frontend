@@ -1,3 +1,4 @@
+import Links from '@/components/common/Links';
 import MissionVision from '@/components/common/MissionVision';
 import axios from 'axios';
 import React from 'react';
@@ -69,6 +70,9 @@ const About = ({ AboutImg }) => {
           </div>
         </div>
       </div>
+
+      {/* <Links /> */}
+
     </div>
   );
 };
