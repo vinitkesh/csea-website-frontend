@@ -6,7 +6,7 @@ import React from 'react';
 // Fetch data from the Strapi backend
 export async function getServerSideProps() {
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/about-us-image`, {
+    const response = await axios.get(`https://arete.assoc.cse.nitc.ac.in/api/about-us-image`, {
       params: {
         populate: '*',
       },
@@ -14,7 +14,7 @@ export async function getServerSideProps() {
 
     // Extract image URL from the response
     const imgData = response.data?.data?.attributes?.img?.data?.attributes?.url;
-    const AboutImg = imgData ? process.env.NEXT_PUBLIC_BACKEND_URL + imgData : null;
+    const AboutImg = imgData ? 'https://arete.assoc.cse.nitc.ac.in/' + imgData : null;
 
     return {
       props: {

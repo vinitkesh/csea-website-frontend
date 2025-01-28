@@ -6,7 +6,7 @@ import axios from 'axios'
 
 export async function getServerSideProps() {
 	try {
-		const res = await axios.get(process.env.THREADS_API, { 
+		const res = await axios.get('https://arete.assoc.cse.nitc.ac.in/api/threads', { 
 			params: { 'populate': '*', 'sort': 'edition:desc' } 
 		})	
 
@@ -16,8 +16,8 @@ export async function getServerSideProps() {
 			edition: item?.attributes?.edition, 
 			release_date: item?.attributes?.release_date,
 			pdf: item?.attributes?.pdf?.data,
-			cover: (process.env.NEXT_PUBLIC_BACKEND_URL + (item?.attributes?.cover?.data?.attributes?.formats?.large?.url ?? item?.attributes?.cover?.data?.attributes?.url)),
-			link : (process.env.NEXT_PUBLIC_BACKEND_URL + (item?.attributes?.pdf?.data?.attributes?.url)) ?? '#',
+			cover: ('https://arete.assoc.cse.nitc.ac.in' + (item?.attributes?.cover?.data?.attributes?.formats?.large?.url ?? item?.attributes?.cover?.data?.attributes?.url)),
+			link : ('https://arete.assoc.cse.nitc.ac.in' + (item?.attributes?.pdf?.data?.attributes?.url)) ?? '#',
 		}))
 
 		// Extract threads
